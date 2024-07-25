@@ -1,0 +1,71 @@
+body {
+    background-image: url(https://lh3.googleusercontent.com/9zE3StG50FuHs9PCo6kMTIhWKyIc3vJ2JqxPZEgaKc8WQ2vzAyWR4wqYYhMZ7zkhc0C893COYflGKt70Sb15e4gg7eI=s1280-w1280-h800);
+    padding: 20px;
+}
+
+h1, h2, p {
+    text-align: center;
+    color: beige;
+}
+
+h1 {
+    margin-top: 0px;
+}
+
+form {
+    color: beige;
+}
+
+.menu {
+    width: 80%;
+    background-color: #1a1830;
+    max-width: 500px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 20px;
+}
+
+.short-form {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.short-form input {
+    margin-top: 5px;
+}
+
+hr {
+    background-color: #f9c54b;
+    border-color: #f9c54b;
+    height: 2px;
+}
+
+.item p {
+    display: inline-block; /* Displays as an inline-level block container. Inline but applicable width and height. */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.dish, .drinks {
+    width: 75%;
+    text-align: left;
+}
+
+.price {
+    width: 25%;
+    text-align: right;
+}
+
+.address {
+    margin-bottom: 0px;
+}
+
+a {
+    color: #838383;
+}
+
+a:hover {
+    color: #f9c54b;
+}
