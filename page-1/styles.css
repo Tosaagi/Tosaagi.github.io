@@ -33,6 +33,7 @@ form {
 
 .short-form input {
     margin-top: 5px;
+    width: 50%;
 }
 
 hr {
@@ -62,8 +63,12 @@ hr {
     margin-bottom: 0px;
 }
 
-a {
-    color: #838383;
+a:link {
+    color: whitesmoke;
+}
+
+a:visited {
+    color: grey;
 }
 
 a:hover {
