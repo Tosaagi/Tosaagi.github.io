@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Comet's Cuisine</title>
+        <title>Comet's Cuisine Survey Form</title>
+        <meta name="viewport" content="width=devide-width, initial-scale=1.0" />
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div class="menu">
+        <div class="form-menu">
             <main>
-                <h1>Comet's Cuisine</h1>
-                <p>Est. 2150</p>
-                <hr>
-                <section>
-                    <h2>Dishes</h2>
-                    <article class="item">
-                        <p class="dish">Big Bang Pizza</p><p class="price">15 Gc</p>
-                    </article>
-                    <article class="item">
-                        <p class="dish">Ceres Croissant</p><p class="price">17 Gc</p>
-                    </article>
-                    <article class="item">
-                        <p class="dish"><a href="https://tosaagi.github.io/">Venus</a> Steak</p><p class="price">35 Gc</p>
-                    </article>
-                    <article class="item">
-                        <p class="dish">Earth Lasagna</p><p class="price">12 Gc</p>
-                    </article>
-                </section>
-                <section>
-                    <h2>Drinks</h2>
-                    <article class="item">
-                        <p class="drinks">Pluto Milkshake</p><p class="price">4 Gc</p>
-                    </article>
-                    <article class="item">
-                        <p class="drinks">Europa Iced Tea</p><p class="price">5 Gc</p>
-                    </article>
-                    <article class="item">
-                        <p class="drinks">Mercury Hot Latte</p><p class="price">8 Gc</p>
-                    </article>
-                </section>
-                <hr>
-                <section>
-                    <h2>Form</h2>
-                    <form>
-                        <fieldset class="short-form">
-                            <label for="addition">Please let us know if you like something else to add to your plate!</label>
-                            <input id="addition" type="text" name="addition" /><button type="submit">Submit</button>
-                        </fieldset>
-                    </form>
-                </section> 
+                <h1 id="title">Comet's Cuisine Survey Form</h1>
+                <p id="description">Please fill out this form to tell us your satisfaction of our restaurant!</p>
+                <form id="survey-form">
+                    <fieldset>
+                        <label id="name-label" for="name">Name: <input id="name" type="text" name="name" placeholder="Enter your name..." required /></label>
+                        <label id="email-label" for="email">Email: <input id="email" type="email" name="email" placeholder="Enter your email..." required /></label>
+                        <label id="number-label" for="number">Age: <input id="number" type="number" name="age" min="13" max="120" placeholder="Enter your age..." required /></label>
+                    </fieldset>
+                    <fieldset>
+                        <label id="dropdown-label" for="dropdown">How did you hear about us?
+                            <select id="dropdown" required>
+                                <option value="">(Select an option)</option>
+                                <option value="poster">I once saw from a poster somewhere iirc</option>
+                                <option value="ad">I watched an ad about this restaurant</option>
+                                <option value="people">My friends or my family mentioned this place once</option>
+                                <option value="social-media">I saw a post on social media</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <label>How likely would you recommend this restaurant to others? (5 being most likely)</label>
+                            <label id="label-rfive" for="rfive"><input id="rfive" class="inline" type="radio" name="rating" value="5" checked> 5</label>
+                            <label id="label-rfour" for="rfour"><input id="rfour" class="inline" type="radio" name="rating" value="4"> 4</label>
+                            <label id="label-rthree" for="rthree"><input id="rthree" class="inline" type="radio" name="rating" value="3"> 3</label>
+                            <label id="label-rtwo" for="rtwo"><input id="rtwo" class="inline" type="radio" name="rating" value="2"> 2</label>
+                            <label id="label-rone" for="rone"><input id="rone" class="inline" type="radio" name="rating" value="1"> 1</label>
+                    </fieldset>
+                    <fieldset>
+                        <label>What aspects do you like about our restaurant? (Choose one or more of the options below)</label>
+                            <label for="cone"><input id="cone" class="inline" type="checkbox" name="favorites" value="food"/> The delicious foods</label>
+                            <label for="ctwo"><input id="ctwo" class="inline" type="checkbox" name="favorites" value="view"/> The amazing asteroid belt's view</label>
+                            <label for="cthree"><input id="cthree" class="inline" type="checkbox" name="favorites" value="staff"/> The hospitable waiter and waitress</label>
+                            <label for="cfour"><input id="cfour" class="inline" type="checkbox" name="favorites" value="price"/> The affordable price</label>
+                            <label for="cfive"><input id="cfive" class="inline" type="checkbox" name="favorites" value="close location"/> The conveniently close location</label>
+                    </fieldset>
+                    <fieldset>
+                        <label>If you have any other things you like to say to us, please leave them in the comment box below!
+                            <textarea id="comments" name="comments" rows="5" cols="30" placeholder="This place is the best..."></textarea>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <input id="submit" type="submit">
+                    </fieldset>
+                </form>
             </main>
-            <hr>
-            <footer>
-                <p><a href="https://tosaagi.github.io/page-2/">Visit our survey form</a></p>
-                <p class="address">150 Elipse Kuiper Belt</p>
-            </footer>
         </div>
     </body>
 </html>
