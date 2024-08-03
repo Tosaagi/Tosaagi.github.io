@@ -83,3 +83,9 @@ fieldset:last-of-type {
     margin: 0 0.5em 0 0;
     vertical-align: middle;
 }
+
+@media (max-width: 600px) {
+    input[type="submit"] {
+        width: 100%;
+    }
+}
