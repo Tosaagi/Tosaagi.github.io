@@ -4,6 +4,14 @@ body {
     font-size: 16px;
 }
 
+.textbox {
+    background-color: #0d1230;
+    font-size: 16px;
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 500px;
+}
+
 .form-menu {
     width: 80%;
     background-color: #0d1230;
@@ -13,32 +21,36 @@ body {
     font-size: 16px;
 }
 
-h1, p {
-    color: beige;
-    text-align: center;
+.data-menu {
+    width: 80%;
+    background-color: #0d1230;
+    padding: 30px;
     margin: 0 auto;
-    margin-bottom: 1em;
+    max-width: 500px;
+    font-size: 16px;
 }
 
-h1 {
-    margin-top: 0px;
+h1, h2, p {
+    color: beige;
+    text-align: center;
+    margin: 0 0 0.5em 0;
 }
 
 p {
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 label {
     display: block;
     color: beige;
-    margin: 0.5rem 0;
+    margin: 0;
 }
 
 input, textarea, select {
     width: 100%;
     margin: 0;
     padding: 0;
-    margin-top: 1em;
+    margin: 5px 0 1em 0;
     min-height: 2em;
 }
 
@@ -50,6 +62,7 @@ input, textarea {
 
 textarea {
     resize: none;
+    margin-top: 10px;
 }
 
 input[type="submit"] {
@@ -62,26 +75,23 @@ input[type="submit"] {
     border-color: white;
 }
 
-form {
-    margin: 0 auto;
-}
-
 fieldset {
     border: none;
-    border-bottom: 1px solid lightslategray;
+    border-top: 1px solid lightslategray;
     padding: 0;
-    margin: 10px;
+    padding-top: 15px;
+    margin: 0 10px;
 }
 
-fieldset:last-of-type {
-    border-bottom: 0px;
+fieldset:first-of-type {
+    border-top: 0px;
 }
 
 .inline {
     width: unset;
     display: inline;
     margin: 0 0.5em 0 0;
-    vertical-align: middle;
+    vertical-align: sub;
 }
 
 @media (max-width: 600px) {
