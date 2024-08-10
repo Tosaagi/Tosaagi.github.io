@@ -17,41 +17,45 @@
                         <label id="email-label" for="email">Email: <input id="email" type="email" name="email" placeholder="Enter your email..." required /></label>
                         <label id="number-label" for="number">Age: <input id="number" type="number" name="age" min="13" max="120" placeholder="Enter your age..." required /></label>
                     </fieldset>
+                    <br>
                     <fieldset>
                         <label id="dropdown-label" for="dropdown">How did you hear about us?
-                            <select id="dropdown" required>
-                                <option value="">(Select an option)</option>
-                                <option value="poster">I once saw from a poster somewhere iirc</option>
-                                <option value="ad">I watched an ad about this restaurant</option>
-                                <option value="people">My friends or my family mentioned this place once</option>
-                                <option value="social-media">I saw a post on social media</option>
-                                <option value="other">Other</option>
+                            <select id="dropdown" name="referrer" required>
+                                <option value="" disabled selected hidden>(Select an option)</option>
+                                <option value="1">I once saw from a poster somewhere iirc</option>
+                                <option value="2">I watched an ad about this restaurant</option>
+                                <option value="3">My friends or my family mentioned this place once</option>
+                                <option value="4">I saw a post on social media</option>
+                                <option value="5">Other</option>
                             </select>
                         </label>
                     </fieldset>
+                    <br>
                     <fieldset>
                         <label>How likely would you recommend this restaurant to others? (5 being most likely)</label>
-                            <label id="label-rfive" for="rfive"><input id="rfive" class="inline" type="radio" name="rating" value="5" checked> 5</label>
-                            <label id="label-rfour" for="rfour"><input id="rfour" class="inline" type="radio" name="rating" value="4"> 4</label>
-                            <label id="label-rthree" for="rthree"><input id="rthree" class="inline" type="radio" name="rating" value="3"> 3</label>
-                            <label id="label-rtwo" for="rtwo"><input id="rtwo" class="inline" type="radio" name="rating" value="2"> 2</label>
-                            <label id="label-rone" for="rone"><input id="rone" class="inline" type="radio" name="rating" value="1"> 1</label>
+                            <label id="label-rfive" for="rdio-1"><input id="rdio-1" class="inline" type="radio" name="rating" value="5" checked> 5</label>
+                            <label id="label-rfour" for="rdio-2"><input id="rdio-2" class="inline" type="radio" name="rating" value="4"> 4</label>
+                            <label id="label-rthree" for="rdio-3"><input id="rdio-3" class="inline" type="radio" name="rating" value="3"> 3</label>
+                            <label id="label-rtwo" for="rdio-4"><input id="rdio-4" class="inline" type="radio" name="rating" value="2"> 2</label>
+                            <label id="label-rone" for="rdio-5"><input id="rdio-5" class="inline" type="radio" name="rating" value="1"> 1</label>
                     </fieldset>
+                    <br>
                     <fieldset>
-                        <label>What aspects do you like about our restaurant? (Choose one or more of the options below)</label>
-                            <label for="cone"><input id="cone" class="inline" type="checkbox" name="favorites" value="food"/> The delicious foods</label>
-                            <label for="ctwo"><input id="ctwo" class="inline" type="checkbox" name="favorites" value="view"/> The amazing asteroid belt's view</label>
-                            <label for="cthree"><input id="cthree" class="inline" type="checkbox" name="favorites" value="staff"/> The hospitable waiter and waitress</label>
-                            <label for="cfour"><input id="cfour" class="inline" type="checkbox" name="favorites" value="price"/> The affordable price</label>
-                            <label for="cfive"><input id="cfive" class="inline" type="checkbox" name="favorites" value="close location"/> The conveniently close location</label>
+                        <label>What aspects do you like about our restaurant? (You can choose one or more from the options below)</label>
+                            <label for="chck-1"><input id="chck-1" class="inline" type="checkbox" name="favorites[]" value="1"/> The delicious foods</label>
+                            <label for="chck-2"><input id="chck-2" class="inline" type="checkbox" name="favorites[]" value="2"/> The amazing asteroid belt's view</label>
+                            <label for="chck-3"><input id="chck-3" class="inline" type="checkbox" name="favorites[]" value="3"/> The hospitable waiter and waitress</label>
+                            <label for="chck-4"><input id="chck-4" class="inline" type="checkbox" name="favorites[]" value="4"/> The affordable price</label>
+                            <label for="chck-5"><input id="chck-5" class="inline" type="checkbox" name="favorites[]" value="5"/> The conveniently close location</label>
                     </fieldset>
+                    <br>
                     <fieldset>
                         <label>If you have any other things you like to say to us, please leave them in the comment box below!
                             <textarea id="comments" name="comments" rows="5" cols="30" placeholder="This place is the best..."></textarea>
                         </label>
                     </fieldset>
                     <fieldset>
-                        <input id="submit" type="submit">
+                        <input id="submit" type="submit" name="submit" value="submit">
                     </fieldset>
                 </form>
             </main>
