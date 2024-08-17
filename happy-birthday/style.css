@@ -1,6 +1,12 @@
 body {
-    background-color: #F6EEE9;
+    background-image: url(https://images.app.goo.gl/6SEMDtCaYs2nwjPJ9);
     font-family: "Brush Script MT", cursive;
+}
+
+.container {
+    width: 80%;
+    margin: 10px auto;
+    background-color: #F6EEE9;
 }
 
 h1, p {
