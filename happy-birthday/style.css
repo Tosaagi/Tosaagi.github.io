@@ -2,10 +2,12 @@ body {
     background-image: url("imagesbg.jpg");
     background-size: cover;
     font-family: "Brush Script MT", cursive;
+    height: auto;
 }
 
 .container {
     width: 80%;
+    height: auto;
     padding: 10px;
     margin: 0 auto;
     margin-top: 50%:
