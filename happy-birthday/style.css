@@ -22,3 +22,8 @@ h1, p {
 h1 {
     color: #FB6F92
 }
+
+img {
+    width: 100%;
+    height: auto;
+}
