@@ -1,5 +1,5 @@
 body {
-    background-image: imagesbg.jpg;
+    background-image: url(imagesbg.jpg);
     font-family: "Brush Script MT", cursive;
 }
 
