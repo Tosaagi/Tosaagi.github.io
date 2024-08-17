@@ -1,0 +1,13 @@
+body {
+    background-color: E4D9C3;
+}
+
+h1, p {
+    left: 0;
+    text-align: center; 
+    width: 100%;
+}
+
+h1 {
+    margin-top: 50%;
+}
