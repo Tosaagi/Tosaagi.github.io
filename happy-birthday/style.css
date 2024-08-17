@@ -6,9 +6,9 @@ body {
 .container {
     width: 80%;
     padding: 10px;
+    margin: 0 auto;
     margin-top: 50%:
-    margin-left: auto;
-    margin-right: auto;
+    text-align: center;
     background-color: #F6EEE9;
 }
 
