@@ -1,12 +1,14 @@
 body {
-    background-image: imagebg.jpg;
+    background-image: imagebg.jpeg;
     font-family: "Brush Script MT", cursive;
 }
 
 .container {
     width: 80%;
     padding: 10px;
-    margin: 10px auto;
+    margin-top: 50%:
+    margin-left: auto;
+    margin-right: auto;
     background-color: #F6EEE9;
 }
 
@@ -19,6 +21,5 @@ h1, p {
 }
 
 h1 {
-    margin-top: 50%;
     color: #FB6F92
 }
