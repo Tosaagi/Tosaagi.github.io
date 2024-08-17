@@ -1,11 +1,13 @@
 body {
-    background-color: #E4D9C3;
+    background-color: #F6EEE9;
+    font-family: "Brush Script MT", cursive;
 }
 
 h1, p {
     left: 0;
     text-align: center; 
     width: 100%;
+    color: #FADDE1;
 }
 
 h1 {
