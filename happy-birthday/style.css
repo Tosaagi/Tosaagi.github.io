@@ -13,9 +13,7 @@ body {
 }
 
 h1, p {
-    left: 0;
     text-align: center; 
-    width: 100%;
     color: #FB9EBB;
     font-weight: bolder;
 }
