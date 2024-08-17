@@ -26,4 +26,6 @@ h1 {
 img {
     width: 50%;
     height: auto;
+    text-align: center;
+    margin: auto;
 }
