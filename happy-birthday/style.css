@@ -1,0 +1,33 @@
+body {
+    background-image: url("imagesbg.jpg");
+    font-family: "Brush Script MT", cursive;
+    height: auto;
+}
+
+.container {
+    width: 80%;
+    height: auto;
+    padding: 10px;
+    margin: 0 auto;
+    margin-top: 50%:
+    text-align: center;
+    background-color: #F6EEE9;
+}
+
+h1, p {
+    text-align: center; 
+    color: #FB9EBB;
+    font-weight: bolder;
+}
+
+h1 {
+    color: #FB6F92
+}
+
+img {
+    width: 50%;
+    height: auto;
+    text-align: center;
+    margin: auto;
+    display: block;
+}
