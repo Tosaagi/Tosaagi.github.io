@@ -154,6 +154,7 @@ function modifyText(textInput, color, weight) {
 
 function update(location) {
     monsterStats.style.display = "none";
+    currentCombatIndex = 0;
     button1.innerText = "[1] " + location["button text"][0];
     button2.innerText = "[2] " + location["button text"][1];
     button3.innerText = "[3] " + location["button text"][2];
