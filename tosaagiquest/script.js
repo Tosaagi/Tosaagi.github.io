@@ -3,7 +3,7 @@ let initializeStats = {
     pN: "Player",
     xP: 0,
     hP: 100,
-    gP: 250,
+    gP: 50,
     cWI: 0,
 
     fI: 0,
