@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: Merriweather, sans-serif;
+}
+
+body {
+    background-color: #1e1e2e;
+}
+
+h1 {
+    color: #ffd700;
+    font-family: Cinzel, sans-serif;
+    text-align: center;
+    margin-top: 30px;
+}
+
+#game {
+    max-width: 500px;
+    background-color: #ffffff;
+    color:#ffffff;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    padding: 10px;
+}
+
+#controls, #stats {
+    border: 1px solid #1e1e2e;
+    color: #1e1e2e;
+    padding: 5px;
+}
+
+#controls {
+    background-color: burlywood;
+}
+
+#controls button {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+
+#controls button:last-of-type {
+    margin-bottom: 0;
+}
+
+.stat {
+    padding-right: 10px;
+}
+
+button {
+    cursor: pointer;
+    font-family: Merriweather;
+    color: #fafad2;
+    background-color: #556b2f;
+    background-image: linear-gradient(#6b8e23, #556b2f);
+    border: 3px solid #556b2f;
+}
+
+#monsterStats {
+    display: none;
+    border: 1px solid #1e1e2e;
+    background-color: #c70d0d;
+    color: #ffffff;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+}
+
+#text {
+    background-color: #1e1e2e;
+    font-family: Merriweather;
+    color: #ffffff;
+    padding: 10px;
+}
+
+.entity {
+    font-weight: bold;
+}
+
+.green {
+    color:greenyellow;
+}
+
+.yellow {
+    color: #ffd700;
+}
+
+.darkRed {
+    color: #8b0000;
+}
+
+.purple {
+    color: purple;
+}
+
+.blueViolet {
+    color: blueviolet;
+}
+
+.grey {
+    color: grey;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.damageRed {
+    color: red;
+}
+
+/* colors:
+        gold: ffd700, 
+        light goldenrod yellow: fafad2,
+        dark red: [a52a2a, 8b0000],
+        dark olive: [6b8e23, 556b2f],
+        saddle brown: [d2b48c, 8b4513],
+        firebrick: [b22222, f08080],
+*/
