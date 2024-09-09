@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Tosaagi's Quest</h1>
+    <h1><span class="title">Tosaagi's Quest</span></h1>
     <div id="game">
         <div id="stats"> 
             <span class="stat">XP: <strong><span id="xpText">0</span></strong></span>
@@ -20,13 +20,15 @@
             <span class="stat">Entity: <strong><span id="monsterName"></span></strong></span>
             <span class="stat">HP: <strong><span id="monsterHealth"></span></strong></span>
         </div>
-        <div id="text">
-            Welcome to Tosaagi's Quest! Buy powerful weapons, fight dangerous cave monsters, and defeat the mighty dragon! Where do you want to go?
+        <div class="text" id="text">
+            Welcome to <span class="title">Tosaagi's Quest</span>! Buy powerful weapons, fight dangerous cave monsters, and defeat the mighty Dragon! Where do you want to go?
         </div>
         <div id="controls">
             <button id="button1" accesskey="1">[1] Go to store</button>
             <button id="button2" accesskey="2">[2] Go to cave</button>
             <button id="button3" accesskey="3">[3] Fight dragon</button>
+        </div>
+        <div class="text" id="combat-log">
         </div>
     </div>
     <script src="./script.js"></script>
