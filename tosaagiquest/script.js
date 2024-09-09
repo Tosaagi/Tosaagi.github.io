@@ -3,7 +3,7 @@ let initializeStats = {
     pN: "Player",
     xP: 0,
     hP: 100,
-    gP: 50,
+    gP: 10,
     cWI: 0,
 
     fI: 0,
@@ -49,15 +49,15 @@ const weapons = [
     },
     {
         name: "Silver Dagger",
-        power: 30
+        power: 10
     },
     {
         name: "Claw Hammer",
-        power: 50
+        power: 30
     },
     {
         name: "Glass Sword",
-        power: 100
+        power: 75
     }
 ];
 
@@ -71,7 +71,7 @@ const monsters = [
         health: 15,
         skills: {
                 name: ["Basic Attack", "Heavy Slam"],
-                level: [4, 10]
+                level: [2, 6]
             }
     },
     {
@@ -81,7 +81,7 @@ const monsters = [
         health: 60,
         skills: {
                 name: ["Bite", "Bloodlust Fang"],
-                level: [10, 20]
+                level: [2, 6]
             }
     },
     {
@@ -91,7 +91,7 @@ const monsters = [
         health: 300,
         skills: {
                 name: ["Claws", "Fire Breath"],
-                level: [22, 50]
+                level: [3, 6]
             }
     }
 ];
@@ -117,8 +117,8 @@ const locations = [
     },
     {
         name: "fight",
-        "button text": ["Attack", "Dodge", "Run"],
-        "button functions": [attack, dodge, goTown],
+        "button text": ["Atk", "Def", "Run"],
+        "button functions": [attack, defend, goTown],
         text: "You are fighting a monster."
     },
     {
@@ -282,8 +282,14 @@ function attack() {
     } else {
         // monster turn
         let monsterSkill = monsters[fighting].skills;
-        let monsterDmg = monsterSkill.level[monsterCurrentSkillIndex];
-        health -= monsterDmg;
+        let monsterDmg = (Math.floor(Math.random() * monsterSkill.level[monsterCurrentSkillIndex] * 5) + monsters[fighting].level * 2) - Math.floor(xp * 0.2);
+        
+        if (monsterDmg <= 0) {
+            monsterDmg = 1;
+            health--;
+        } else {
+            health -= monsterDmg;
+        }
 
         monsterDmg = modifyText(monsterDmg, "damageRed", 2)
 
@@ -300,9 +306,9 @@ function attack() {
     }
 }
 
-function dodge() {
+function defend() {
     monsterName = modifyText(monsters[fighting].name, monsters[fighting].color, 3);
-    text.innerHTML += "<br>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + " You dodge the attack from the " + monsterName + ".";
+    text.innerHTML += "<br>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + " You defended the attack from the " + monsterName + ".";
 
     monsterNextAttack(monsterName);
     currentCombatIndex++;
