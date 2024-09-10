@@ -340,6 +340,8 @@ function playerTurn() {
         // monster turn
         monsterTurn(0);
     }
+
+    console.log("Player Damage: " + playerDamage);
 }
 
 function defend() {
@@ -365,30 +367,33 @@ function monsterTurn(playerDef) {
         logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " deals " + modifyText(monsterDamage, "damageRed", 2) + " damage to " + playerNameTextModified + " using [" + monsterSkill.name[monsterCurrentSkillIndex] + "].</span>";
         logEntryUpdate(logEntry);
         
-        monsterPreparesAttack(monsterName);
+        monsterPreparesAttack();
         currentCombatIndex++;
 
         if (playerHealth <= 0) {
             lose();
         }
+
+        if ((monsterSkill.cooldown[(monsterSkill.cooldown.length) - 1]) + 1 === monsterSkillCooldown) {
+            monsterSkillCooldown = 0;
+            monsterCurrentSkillIndex = 0;
+        }
+    
+    console.log("Monster Damage: " + monsterDamage);
 }
 
 function getDamage(damage, damageRng) {
     return (Math.floor((Math.random() * damageRng) + 1) - (damageRng / 2)) + damage;
 }
 
-function monsterPreparesAttack(monsterName) {
+function monsterPreparesAttack() {
     monsterSkillCooldown++;
 
     if (monsterSkill.cooldown.includes(monsterSkillCooldown) && monsterSkillCooldown !== 0) {
+
         logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " prepares a " + modifyText("special", "purple", 3) + " attack.</span>";
         logEntryUpdate(logEntry);
         monsterCurrentSkillIndex++;
-
-        if (monsterSkill.cooldown[(monsterSkill.cooldown.length - 1)] === monsterSkillCooldown) {
-            monsterSkillCooldown = 0;
-            monsterCurrentSkillIndex = 0;
-        }
 
     } else {
         logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " readies a basic attack.</span>";
