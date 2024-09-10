@@ -18,25 +18,30 @@ const initializeStats = {
     mNm: "",
     mHP: 0,
     mS: 0,
+    mSC: 0,
     mCSI: 0
 };
 
 const weapons = [
     {
         name: "Wooden Stick",
-        power: 5
+        power: 10,
+        price: 10
     },
     {
         name: "Silver Dagger",
-        power: 10
+        power: 20,
+        price: 30
     },
     {
         name: "Claw Hammer",
-        power: 30
+        power: 45,
+        price: 70
     },
     {
         name: "Glass Sword",
-        power: 75
+        power: 75,
+        price: 150
     }
 ];
 
@@ -46,9 +51,12 @@ const monsters = [
         color: "green",
         level: 2,
         health: 15,
+        strength: 10,
+        damageSpread: 2,
         skills: {
                 name: ["Basic Attack", "Heavy Slam"],
-                level: [2, 6]
+                cooldown: [0, 2],
+                extraDamage: [0, 10]
             }
     },
     {
@@ -56,9 +64,12 @@ const monsters = [
         color: "darkRed",
         level: 8,
         health: 60,
+        strength: 25,
+        damageSpread: 20,
         skills: {
                 name: ["Bite", "Bloodlust Fang"],
-                level: [2, 6]
+                cooldown: [0, 3],
+                extraDamage: [0, 20]
             }
     },
     {
@@ -66,9 +77,12 @@ const monsters = [
         color: "blueViolet",
         level: 20,
         health: 300,
+        strength: 50,
+        damageSpread: 10,
         skills: {
                 name: ["Claws", "Fire Breath"],
-                level: [3, 6]
+                cooldown: [0, 3],
+                extraDamage: [0, 25]
             }
     }
 ];
@@ -82,7 +96,7 @@ const locations = [
     },
     {
         name: "Store",
-        "button text": ["Restore HP (10 GP)", "Buy weapon (30 GP)", "Go to town square"],
+        "button text": ["Restore HP (10 GP)", "Buy weapon (GP)", "Go to town square"],
         "button functions": [buyHealth, buyWeapon, goTown],
         text: "You enter the store."
     },
@@ -95,7 +109,7 @@ const locations = [
     {
         name: "fight",
         "button text": ["Attack", "Defend", "Escape"],
-        "button functions": [attack, defend, goTown],
+        "button functions": [playerTurn, defend, goTown],
         text: "You are fighting a monster."
     },
     {
@@ -134,7 +148,7 @@ let playerLevel = initializeStats.lvl;
 let playerXp = initializeStats.exp;
 let playerHealth = initializeStats.hP;
 // let playerMaxHealth = initializeStats.mHP;
-// let playerDefense = initializeStats.def;
+let playerDefense = initializeStats.def;
 // let playerStrength = initializeStats.str;
 // let playerActionPoints = initializeStats.aP;
 // let playerMaxActionPoints = initializeStats.mxAP;
@@ -142,6 +156,10 @@ let playerGold = initializeStats.gP;
 let playerInventory = [weapons[0].name];
 let currentWeaponIndex = initializeStats.cWI;
 
+let weaponPrice;
+
+let playerDamage;
+let monsterDamage;
 let fighting = initializeStats.fI;
 let logEntry = initializeStats.lE;
 let currentCombatIndex = initializeStats.cCI;
@@ -149,6 +167,7 @@ let currentCombatIndex = initializeStats.cCI;
 let monsterName = initializeStats.mNm;
 let monsterHealth = initializeStats.mHP;
 let monsterSkill = initializeStats.mS;
+let monsterSkillCooldown = initializeStats.mSC;
 let monsterCurrentSkillIndex = initializeStats.mCSI;
 
 let playerNameTextModified = modifyText(playerName, "yellow", 3);
@@ -175,7 +194,6 @@ button3.onclick = fightDragon;
 function update(location) {
     monsterStats.style.display = "none";
     combatLog.style.display = "none";
-    currentCombatIndex = initializeStats.cCI;
     button1.innerText = "[1] " + location["button text"][0];
     button2.innerText = "[2] " + location["button text"][1];
     button3.innerText = "[3] " + location["button text"][2];
@@ -200,6 +218,8 @@ function goTown() {
 
 function goStore() {
     update(locations[1]);
+    weaponPrice = weapons[currentWeaponIndex + 1].price;
+    button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)"
 }
 
 function goCave() {
@@ -229,9 +249,11 @@ function buyHealth() {
 
 function buyWeapon() {
     if (currentWeaponIndex < weapons.length - 1) {
-        if (playerGold >= 30) {
-            playerGold -= 30;
+        if (playerGold >= weaponPrice) {
+            playerGold -= weaponPrice;
             currentWeaponIndex++;
+            weaponPrice = weapons[currentWeaponIndex + 1].price
+            button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)"
 
             let newWeapon = weapons[currentWeaponIndex].name;
             playerInventory.push(newWeapon);
@@ -243,6 +265,8 @@ function buyWeapon() {
             text.innerText = "You do not have enough GP to buy a weapon.";
         }
     } else {
+        weaponPrice = weapons[0].price;
+
         text.innerText = "You already have the most powerful weapon!";
         button2.innerText = "[2] Sell weapon for 15 GP";
         button2.onclick = sellWeapon;
@@ -251,7 +275,8 @@ function buyWeapon() {
 
 function sellWeapon() {
     if (playerInventory.length > 1) {
-        playerGold += 15;
+        playerGold += weaponPrice;
+        weaponPrice = weapons[playerInventory.length - 1].price;
         let currentWeapon = playerInventory.shift();
 
         goldText.innerText = playerGold;
@@ -273,8 +298,12 @@ function goFight() {
     monsterNameText.innerText = monsters[fighting].name;
     monsterHealthText.innerText = monsters[fighting].health;
 
+    currentCombatIndex = initializeStats.cCI;
+    monsterSkillCooldown = 0;
+
     combatLog.style.display = "flex";
-    combatLog.innerHTML = "<span>[0] Battle start.</span>";
+    combatLog.innerHTML = "<span>[<span class='grey'>0</span>] <span class='grey'>Battle start.</span></span>";
+    combatLog.innerHTML += "<hr>";
 }
 
 function fightSlime() {
@@ -292,9 +321,8 @@ function fightDragon() {
     goFight();
 }
 
-function attack() {
-    // player turn
-    let playerDamage = weapons[currentWeaponIndex].power + Math.floor(Math.random() * playerXp) + 1; // player damage
+function playerTurn() {
+    playerDamage = weapons[currentWeaponIndex].power + Math.floor(Math.random() * playerXp) + 1; // player damage
     monsterHealth -= playerDamage;
     monsterHealthText.innerText = monsterHealth;
 
@@ -310,7 +338,20 @@ function attack() {
         }
     } else {
         // monster turn
-        let monsterDamage = (Math.floor(Math.random() * monsterSkill.level[monsterCurrentSkillIndex] * 5) + monsters[fighting].level * 2) - Math.floor(playerXp * 0.2);
+        monsterTurn(playerDefense);
+    }
+}
+
+function defend() {
+    logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + " You defend.</span>";
+    logEntryUpdate(logEntry);
+
+    monsterTurn(playerDefense * 15);
+}
+
+function monsterTurn(playerDef) {
+    monsterDamage = getDamage(monsters[fighting].strength, monsters[fighting].damageSpread) + monsterSkill.extraDamage[monsterCurrentSkillIndex];
+    monsterDamage -= playerDef;
         
         if (monsterDamage <= 0) {
             monsterDamage = 1;
@@ -330,25 +371,27 @@ function attack() {
         if (playerHealth <= 0) {
             lose();
         }
-    }
 }
 
-function defend() {
-    logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + " You defended the attack from the " + monsterNameTextModified + ".</span>";
-    logEntryUpdate(logEntry);
-
-    monsterPreparesAttack(monsterName);
-    currentCombatIndex++;
+function getDamage(damage, damageRng) {
+    return (Math.floor((Math.random() * damageRng) + 1) - (damageRng / 2)) + damage;
 }
 
 function monsterPreparesAttack(monsterName) {
-    monsterCurrentSkillIndex = Math.random() < 0.7 ? 0 : 1;
+    monsterSkillCooldown++;
 
-    if (monsterCurrentSkillIndex === 0) {
-        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " readies a basic attack.</span>";
-        logEntryUpdate(logEntry);
-    } else {
+    if (monsterSkill.cooldown.includes(monsterSkillCooldown) && monsterSkillCooldown !== 0) {
         logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " prepares a " + modifyText("special", "purple", 3) + " attack.</span>";
+        logEntryUpdate(logEntry);
+        monsterCurrentSkillIndex++;
+
+        if (monsterSkill.cooldown[(monsterSkill.cooldown.length - 1)] === monsterSkillCooldown) {
+            monsterSkillCooldown = 0;
+            monsterCurrentSkillIndex = 0;
+        }
+
+    } else {
+        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " readies a basic attack.</span>";
         logEntryUpdate(logEntry);
     }
 }
@@ -392,6 +435,7 @@ function restart() {
     monsterName = initializeStats.mNm;
     monsterHealth = initializeStats.mHP;
     monsterSkill = initializeStats.mS;
+    monsterSkillCooldown = initializeStats.mSC;
     monsterCurrentSkillIndex = initializeStats.mCSI;
 
     xpText.innerText = playerXp;
