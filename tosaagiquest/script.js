@@ -4,8 +4,8 @@ const initializeStats = {
     exp: 0,
     hP: 100,
     mxHP: 100,
-    def: 1,
-    str: 1,
+    def: 5,
+    str: 5,
     aP: 2,
     mxAP: 2,
     gP: 10,
@@ -55,7 +55,7 @@ const monsters = [
         damageSpread: 2,
         skills: {
                 name: ["Basic Attack", "Heavy Slam"],
-                cooldown: [0, 2],
+                cooldown: [0, 1],
                 extraDamage: [0, 10]
             }
     },
@@ -65,7 +65,7 @@ const monsters = [
         level: 8,
         health: 60,
         strength: 25,
-        damageSpread: 20,
+        damageSpread: 10,
         skills: {
                 name: ["Bite", "Bloodlust Fang"],
                 cooldown: [0, 3],
@@ -78,7 +78,7 @@ const monsters = [
         level: 20,
         health: 300,
         strength: 50,
-        damageSpread: 10,
+        damageSpread: 12,
         skills: {
                 name: ["Claws", "Fire Breath"],
                 cooldown: [0, 3],
@@ -338,7 +338,7 @@ function playerTurn() {
         }
     } else {
         // monster turn
-        monsterTurn(playerDefense);
+        monsterTurn(0);
     }
 }
 
@@ -346,7 +346,7 @@ function defend() {
     logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + " You defend.</span>";
     logEntryUpdate(logEntry);
 
-    monsterTurn(playerDefense * 15);
+    monsterTurn(playerDefense);
 }
 
 function monsterTurn(playerDef) {
