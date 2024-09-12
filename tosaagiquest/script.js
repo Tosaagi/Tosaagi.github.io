@@ -11,7 +11,7 @@ const initializeStats = {
     gP: 10,
     cWI: 0,
 
-    fI: 0,
+    fI: null,
     lE: "",
     cCI: 1,
 
@@ -173,6 +173,7 @@ let monsterCurrentSkillIndex = initializeStats.mCSI;
 let playerNameTextModified = modifyText(playerName, "yellow", 3);
 let monsterNameTextModified;
 
+const button0 = document.querySelector("#button0");
 const button1 = document.querySelector("#button1");
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector('#button3');
@@ -183,13 +184,36 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterNameText = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+const buttons = document.querySelector("#controls");
 const text = document.querySelector("#text");
 const combatLog = document.querySelector("#combat-log");
 
 // initialize buttons
+button0.onclick = checkStats;
 button1.onclick = goStore;
 button2.onclick = goCave;
 button3.onclick = fightDragon;
+
+function checkStats() {
+    monsterStats.style.display = "none";
+    combatLog.style.display = "none";
+    button0.innerText = "close";
+    button0.onclick = closeStats;
+    buttons.style.display = "none";
+    text.style.display = "none";
+}
+
+function closeStats() {
+    if(fighting !== null) {
+        monsterStats.style.display = "block";
+        combatLog.style.display = "flex";
+    }
+
+    button0.innerText = "stats";
+    button0.onclick = checkStats;
+    buttons.style.display = "block";
+    text.style.display = "inline";
+}
 
 function update(location) {
     monsterStats.style.display = "none";
@@ -210,7 +234,7 @@ function logEntryUpdate(log) {
 
 function goTown() {
     update(locations[0]);
-    fighting = 0;
+    fighting = null;
     monsterName = "";
     monsterHealth = 0;
     monsterCurrentSkillIndex = 0;
@@ -218,8 +242,9 @@ function goTown() {
 
 function goStore() {
     update(locations[1]);
+
     weaponPrice = weapons[currentWeaponIndex + 1].price;
-    button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)"
+    button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)";
 }
 
 function goCave() {
@@ -238,7 +263,7 @@ function buyHealth() {
 
             goldText.innerText = playerGold;
             healthText.innerText = playerHealth;
-            text.innerText = "You've restored 10 HP."
+            text.innerText = "You've restored 10 HP.";
         } else {
             text.innerText = "You do not have enough gold to buy HP.";
         }
@@ -252,8 +277,12 @@ function buyWeapon() {
         if (playerGold >= weaponPrice) {
             playerGold -= weaponPrice;
             currentWeaponIndex++;
-            weaponPrice = weapons[currentWeaponIndex + 1].price
-            button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)"
+
+            // 
+            if (currentWeaponIndex !== weapons.length - 1) {
+                weaponPrice = weapons[currentWeaponIndex + 1].price;
+                button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)";
+            }
 
             let newWeapon = weapons[currentWeaponIndex].name;
             playerInventory.push(newWeapon);
@@ -261,6 +290,7 @@ function buyWeapon() {
             goldText.innerText = playerGold;
             text.innerText = "You now have a " + newWeapon + ".";
             text.innerText += " In your inventory you have:\n" + playerInventory;
+
         } else {
             text.innerText = "You do not have enough GP to buy a weapon.";
         }
@@ -275,7 +305,7 @@ function buyWeapon() {
 
 function sellWeapon() {
     if (playerInventory.length > 1) {
-        playerGold += weaponPrice;
+        playerGold += (weaponPrice - (Math.floor(weaponPrice / 2)));
         weaponPrice = weapons[playerInventory.length - 1].price;
         let currentWeapon = playerInventory.shift();
 
