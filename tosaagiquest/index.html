@@ -12,16 +12,31 @@
     <h1><span class="title">Tosaagi's Quest</span></h1>
     <div id="game">
         <div id="stats">
-            <div class="short-stats">
-                <span class="stat">XP: <strong><span id="xpText">0</span></strong></span>
-                <span class="stat">HP: <strong><span id="healthText">100</span></strong></span>
-                <span class="stat">GP: <strong><span id="goldText">10</span></strong></span>
+            <div id="full-stats">
+                <span class="stat"><strong><span id="playerNameText"></span></strong></span>
+                <br>
+                <span class="stat">LV: <strong><span id="levelText"></span></strong></span>
+                <span class="stat">HP: <strong><span id="healthText"></span></strong></span>
+                <span class="stat">XP: <strong><span id="experienceText"></span></strong></span>
+                <br>
+                <span class="stat">STR: <strong><span id="strengthText"></span></strong></span>
+                <span class="stat">DEF: <strong><span id="defenseText"></span></strong></span>
+                <br>
+                <span class="stat">GP: <strong><span id="goldText"></span></strong></span>
+            </div>
+            <div id="short-stats">
+                <span class="stat">LV: <strong><span id="game-levelText">1</span></strong></span>
+                <span class="stat">HP: <strong><span id="game-healthText">100</span></strong></span>
+                <span class="stat">GP: <strong><span id="game-goldText">10</span></strong></span>
             </div>
             <button id="button0">stats</button>
         </div>
         <div id="monsterStats">
-            <span class="stat">Entity: <strong><span id="monsterName"></span></strong></span>
+            <span class="stat">Fighting: <strong><span id="monsterName"></span></strong></span>
             <span class="stat">HP: <strong><span id="monsterHealth"></span></strong></span>
+            <div class="progressbar-background">
+                <div id="monsterHealthBar"></div>
+            </div>
         </div>
         <div class="text" id="text">
             Welcome to <span class="title">Tosaagi's Quest</span>! Buy powerful weapons, fight dangerous cave monsters, and defeat the mighty Dragon! Where do you want to go?
@@ -32,7 +47,7 @@
             <button id="button3" accesskey="3">[3] Fight dragon</button>
         </div>
     </div>
-    <div class="text" id="combat-log">
+    <div class="text" id="combat-logs">
     </div>
     <script src="./script.js"></script>
 </body>

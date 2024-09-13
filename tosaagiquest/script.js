@@ -1,19 +1,20 @@
 const initializeStats = {
     pName: "Player",
     lvl: 1,
-    exp: 0,
+    xP: 0,
     hP: 100,
     mxHP: 100,
     def: 5,
     str: 5,
     aP: 2,
     mxAP: 2,
-    gP: 10,
+    gP: 1000,
     cWI: 0,
 
     fI: null,
     lE: "",
     cCI: 1,
+    cTI: 0,
 
     mNm: "",
     mHP: 0,
@@ -25,17 +26,17 @@ const initializeStats = {
 const weapons = [
     {
         name: "Wooden Stick",
-        power: 10,
+        power: 5,
         price: 10
     },
     {
         name: "Silver Dagger",
-        power: 20,
+        power: 15,
         price: 30
     },
     {
         name: "Claw Hammer",
-        power: 45,
+        power: 30,
         price: 70
     },
     {
@@ -109,7 +110,7 @@ const locations = [
     {
         name: "fight",
         "button text": ["Attack", "Defend", "Escape"],
-        "button functions": [playerTurn, defend, goTown],
+        "button functions": [attack, defend, goTown],
         text: "You are fighting a monster."
     },
     {
@@ -145,11 +146,11 @@ function modifyText(textInput, color, weight) {
 
 let playerName = initializeStats.pName;
 let playerLevel = initializeStats.lvl;
-let playerXp = initializeStats.exp;
+let playerXp = initializeStats.xP;
 let playerHealth = initializeStats.hP;
-// let playerMaxHealth = initializeStats.mHP;
+let playerMaxHealth = initializeStats.mxHP;
 let playerDefense = initializeStats.def;
-// let playerStrength = initializeStats.str;
+let playerStrength = initializeStats.str;
 // let playerActionPoints = initializeStats.aP;
 // let playerMaxActionPoints = initializeStats.mxAP;
 let playerGold = initializeStats.gP;
@@ -163,6 +164,7 @@ let monsterDamage;
 let fighting = initializeStats.fI;
 let logEntry = initializeStats.lE;
 let currentCombatIndex = initializeStats.cCI;
+let currentTurnIndex = initializeStats.cTI;
 
 let monsterName = initializeStats.mNm;
 let monsterHealth = initializeStats.mHP;
@@ -178,15 +180,27 @@ const button1 = document.querySelector("#button1");
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector('#button3');
 
-const xpText = document.querySelector("#xpText");
-const healthText = document.querySelector("#healthText")
+const playerNameText = document.querySelector("#playerNameText");
+const levelText = document.querySelector("#levelText");
+const healthText = document.querySelector("#healthText");
+const experienceText = document.querySelector("#experienceText");
+const strengthText = document.querySelector("#strengthText");
+const defenseText = document.querySelector("#defenseText");
 const goldText = document.querySelector("#goldText");
+
+const gameLevelText = document.querySelector("#game-levelText");
+const gameHealthText = document.querySelector("#game-healthText")
+const gameGoldText = document.querySelector("#game-goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterNameText = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+
+const fullStats = document.querySelector("#full-stats");
+const shortStats = document.querySelector("#short-stats");
+const monsterHealthBar = document.querySelector("#monsterHealthBar");
 const buttons = document.querySelector("#controls");
 const text = document.querySelector("#text");
-const combatLog = document.querySelector("#combat-log");
+const combatLogs = document.querySelector("#combat-logs");
 
 // initialize buttons
 button0.onclick = checkStats;
@@ -195,8 +209,19 @@ button2.onclick = goCave;
 button3.onclick = fightDragon;
 
 function checkStats() {
+    fullStats.style.display = "block";
+    shortStats.style.display = "none";
+
+    playerNameText.innerText = playerName;
+    levelText.innerText = playerLevel;
+    healthText.innerText = (playerHealth + "/" + playerMaxHealth);
+    experienceText.innerText = playerXp;
+    strengthText.innerText = playerStrength;
+    defenseText.innerText = playerDefense;
+    goldText.innerText = playerGold;
+
     monsterStats.style.display = "none";
-    combatLog.style.display = "none";
+    combatLogs.style.display = "none";
     button0.innerText = "close";
     button0.onclick = closeStats;
     buttons.style.display = "none";
@@ -206,18 +231,20 @@ function checkStats() {
 function closeStats() {
     if(fighting !== null) {
         monsterStats.style.display = "block";
-        combatLog.style.display = "flex";
+        combatLogs.style.display = "flex";
     }
 
+    fullStats.style.display = "none";
+    shortStats.style.display = "flex";
     button0.innerText = "stats";
     button0.onclick = checkStats;
     buttons.style.display = "block";
-    text.style.display = "inline";
+    text.style.display = "block";
 }
 
 function update(location) {
     monsterStats.style.display = "none";
-    combatLog.style.display = "none";
+    combatLogs.style.display = "none";
     button1.innerText = "[1] " + location["button text"][0];
     button2.innerText = "[2] " + location["button text"][1];
     button3.innerText = "[3] " + location["button text"][2];
@@ -228,13 +255,16 @@ function update(location) {
 }
 
 function logEntryUpdate(log) {
-    combatLog.innerHTML = (log + combatLog.innerHTML);
-    currentCombatIndex++;
+    if (log === "newTurn"){
+        combatLogs.innerHTML = ("<span id='combat-log' class='grey'><span></span><span>Turn: " + currentTurnIndex + "</span></span>" + combatLogs.innerHTML)
+    } else {
+        combatLogs.innerHTML = ("<span id='combat-log'>" + log + "</span>" + combatLogs.innerHTML);
+        currentCombatIndex++;
+    }
 }
 
 function goTown() {
     update(locations[0]);
-    fighting = null;
     monsterName = "";
     monsterHealth = 0;
     monsterCurrentSkillIndex = 0;
@@ -252,17 +282,17 @@ function goCave() {
 }
 
 function buyHealth() {
-    if (playerHealth < 100) {
+    if (playerHealth < playerMaxHealth) {
         if (playerGold >= 10) {
             playerGold -= 10;
-            if ((playerHealth + 10) >= 100) {
-                playerHealth = 100;
+            if ((playerHealth + 10) >= playerMaxHealth) {
+                playerHealth = playerMaxHealth;
             } else {
                 playerHealth += 10;
             }
 
-            goldText.innerText = playerGold;
-            healthText.innerText = playerHealth;
+            gameGoldText.innerText = playerGold;
+            gameHealthText.innerText = playerHealth;
             text.innerText = "You've restored 10 HP.";
         } else {
             text.innerText = "You do not have enough gold to buy HP.";
@@ -274,20 +304,20 @@ function buyHealth() {
 
 function buyWeapon() {
     if (currentWeaponIndex < weapons.length - 1) {
-        if (playerGold >= weaponPrice) {
+        if (playerGold >= weaponPrice) { // cwi = 2
             playerGold -= weaponPrice;
-            currentWeaponIndex++;
+            currentWeaponIndex++; //cwi = 3
 
             // 
             if (currentWeaponIndex !== weapons.length - 1) {
                 weaponPrice = weapons[currentWeaponIndex + 1].price;
                 button2.innerText = "[2] Buy weapon (" + weaponPrice + " GP)";
-            }
+            } 
 
             let newWeapon = weapons[currentWeaponIndex].name;
             playerInventory.push(newWeapon);
 
-            goldText.innerText = playerGold;
+            gameGoldText.innerText = playerGold;
             text.innerText = "You now have a " + newWeapon + ".";
             text.innerText += " In your inventory you have:\n" + playerInventory;
 
@@ -309,7 +339,7 @@ function sellWeapon() {
         weaponPrice = weapons[playerInventory.length - 1].price;
         let currentWeapon = playerInventory.shift();
 
-        goldText.innerText = playerGold;
+        gameGoldText.innerText = playerGold;
         text.innerHTML = "You sold a " + currentWeapon + ".";
         text.innerHTML += " In your inventory you have: " + playerInventory;
     } else {
@@ -327,13 +357,15 @@ function goFight() {
     monsterStats.style.display = "block";
     monsterNameText.innerText = monsters[fighting].name;
     monsterHealthText.innerText = monsters[fighting].health;
+    monsterHealthBar.style.width = ("100%");
 
-    currentCombatIndex = initializeStats.cCI;
+    currentCombatIndex = 1;
+    currentTurnIndex = 0;
     monsterSkillCooldown = 0;
 
-    combatLog.style.display = "flex";
-    combatLog.innerHTML = "<span>[<span class='grey'>0</span>] <span class='grey'>Battle start.</span></span>";
-    combatLog.innerHTML += "<hr>";
+    combatLogs.style.display = "flex";
+    combatLogs.innerHTML = "<span id='combat-log'><span>[<span class='grey'>0</span>]<span class='grey'>Battle start.</span></span></span>";
+    combatLogs.innerHTML += "<hr>";
 }
 
 function fightSlime() {
@@ -351,12 +383,16 @@ function fightDragon() {
     goFight();
 }
 
-function playerTurn() {
-    playerDamage = weapons[currentWeaponIndex].power + Math.floor(Math.random() * playerXp) + 1; // player damage
+function attack() {
+    currentTurnIndex++;
+    logEntryUpdate("newTurn");
+
+    playerDamage = playerStrength + weapons[currentWeaponIndex].power; // player damage
     monsterHealth -= playerDamage;
+    monsterHealthBar.style.width = ((monsterHealth / monsters[fighting].health) * 100 + "%");
     monsterHealthText.innerText = monsterHealth;
 
-    logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + playerNameTextModified + " deals " + modifyText(playerDamage, "damageRed", 2) + " damage to " + monsterNameTextModified + " using [" + weapons[currentWeaponIndex].name + "].</span>";
+    logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "]</span><span> " + playerNameTextModified + " deals " + modifyText(playerDamage, "damageRed", 2) + " damage to " + monsterNameTextModified + " using [" + weapons[currentWeaponIndex].name + "].</span>";
     logEntryUpdate(logEntry);
 
     // check battle condition
@@ -375,7 +411,10 @@ function playerTurn() {
 }
 
 function defend() {
-    logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + " You defend.</span>";
+    currentTurnIndex++;
+    logEntryUpdate("newTurn");
+
+    logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "]</span><span> " + modifyText(playerName, "yellow", 3) + " defend.</span>";
     logEntryUpdate(logEntry);
 
     monsterTurn(playerDefense);
@@ -392,13 +431,12 @@ function monsterTurn(playerDef) {
             playerHealth -= monsterDamage;
         }
 
-        healthText.innerText = playerHealth;
+        gameHealthText.innerText = playerHealth;
 
-        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " deals " + modifyText(monsterDamage, "damageRed", 2) + " damage to " + playerNameTextModified + " using [" + monsterSkill.name[monsterCurrentSkillIndex] + "].</span>";
+        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "]</span><span> " + monsterNameTextModified + " deals " + modifyText(monsterDamage, "damageRed", 2) + " damage to " + playerNameTextModified + " using [" + monsterSkill.name[monsterCurrentSkillIndex] + "].</span>";
         logEntryUpdate(logEntry);
         
         monsterPreparesAttack();
-        currentCombatIndex++;
 
         if (playerHealth <= 0) {
             lose();
@@ -421,12 +459,12 @@ function monsterPreparesAttack() {
 
     if (monsterSkill.cooldown.includes(monsterSkillCooldown) && monsterSkillCooldown !== 0) {
 
-        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " prepares a " + modifyText("special", "purple", 3) + " attack.</span>";
+        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "]</span><span> " + monsterNameTextModified + " prepares a " + modifyText("special", "purple", 3) + " attack.</span>";
         logEntryUpdate(logEntry);
         monsterCurrentSkillIndex++;
 
     } else {
-        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "] " + monsterNameTextModified + " readies a basic attack.</span>";
+        logEntry = "<span>[" + modifyText(currentCombatIndex, "grey", 2) + "]</span><span> " + monsterNameTextModified + " readies a basic attack.</span>";
         logEntryUpdate(logEntry);
     }
 }
@@ -434,9 +472,9 @@ function monsterPreparesAttack() {
 function defeatMonster() {
     playerGold += Math.floor(monsters[fighting].level * 6.7);
     playerXp += monsters[fighting].level;
+    fighting = null;
 
-    goldText.innerText = playerGold;
-    xpText.innerText = playerXp;
+    gameGoldText.innerText = playerGold;
 
     update(locations[4]);
 }
@@ -452,11 +490,11 @@ function winGame() {
 function restart() {
     playerName = initializeStats.pName;
     playerLevel = initializeStats.lvl;
-    playerXp = initializeStats.exp;
+    playerXp = initializeStats.xP;
     playerHealth = initializeStats.hP;
     // playerMaxHealth = initializeStats.mHP;
-    // playerDefense = initializeStats.def;
-    // playerStrength = initializeStats.str;
+    playerDefense = initializeStats.def;
+    playerStrength = initializeStats.str;
     // playerActionPoints = initializeStats.aP;
     // playerMaxActionPoints = initializeStats.mxAP;
     playerGold = initializeStats.gP;
@@ -466,6 +504,7 @@ function restart() {
     fighting = initializeStats.fI;
     logEntry = initializeStats.lE;
     currentCombatIndex = initializeStats.cCI;
+    currentTurnIndex = initializeStats.cTI;
 
     monsterName = initializeStats.mNm;
     monsterHealth = initializeStats.mHP;
@@ -473,8 +512,8 @@ function restart() {
     monsterSkillCooldown = initializeStats.mSC;
     monsterCurrentSkillIndex = initializeStats.mCSI;
 
-    xpText.innerText = playerXp;
-    healthText.innerText = playerHealth;
-    goldText.innerText = playerGold;
+    gameLevelText.innerText = playerLevel;
+    gameHealthText.innerText = playerHealth;
+    gameGoldText.innerText = playerGold;
     goTown();
 }

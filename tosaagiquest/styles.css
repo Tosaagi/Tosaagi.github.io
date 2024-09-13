@@ -24,8 +24,7 @@ h1 {
 }
 
 #game {
-    display: flex;
-    flex-direction: column;
+    display: block;
     max-width: 500px;
     max-height: 600px;
     background-color: #ffffff;
@@ -49,7 +48,20 @@ h1 {
     padding: 5px 10px;
 }
 
+#full-stats {
+    display: none;
+}
+
+#full-stats > span {
+    display: block;
+}
+
+br {
+    height: 1rem;
+}
+
 #stats > button {
+    align-self: flex-start;
     cursor: pointer;
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
@@ -96,12 +108,29 @@ button:hover {
 }
 
 #monsterStats {
+    padding-top: 5px;
     display: none;
     border: 1px solid #1e1e2e;
     background-color: #c70d0d;
     color: #ffffff;
     font-size: 0.8rem;
+}
+
+#monsterStats > .stat {
     padding: 5px 10px;
+}
+
+.progressbar-background {
+    background-color: #1e1e2e;
+    height: 0.2rem;
+}
+
+#monsterHealthBar {
+    margin-top: 3px;
+    text-align: left;
+    background-color: #8b0000;
+    width: 100%;
+    height: 0.2rem;
 }
 
 hr {
@@ -109,7 +138,7 @@ hr {
     max-width: 800px;
 }
 
-#combat-log {
+#combat-logs {
     font-family: 'Courier New', Courier, monospace;
     display: none;
     flex-direction: column-reverse;
@@ -121,7 +150,14 @@ hr {
     overflow-x: hidden;
 }
 
+#combat-log {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
 .text {
+    display: block;
     width: 100%;
     background-color: #1e1e2e;
     font-family: Merriweather, sans-serif;
@@ -162,7 +198,7 @@ hr {
 }
 
 @media only screen and (max-width: 767px) {
-    #combat-log {
+    #combat-logs {
         max-height: 12rem;
     }
 }
