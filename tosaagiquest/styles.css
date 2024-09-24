@@ -8,7 +8,7 @@ html {
 }
 
 body {
-    background-color: #1e1e2e;
+    background-color: #0a1128;
     padding: 10px;
 }
 
@@ -36,8 +36,8 @@ h1 {
 
 #controls, #stats {
     width: 100%;
-    border: 1px solid #1e1e2e;
-    color: #1e1e2e;
+    border: 1px solid #0a1128;
+    color: #0a1128;
     padding: 5px;
 }
 
@@ -60,6 +60,10 @@ br {
     height: 1rem;
 }
 
+.stat {
+    padding-right: 10px;
+}
+
 #stats > button {
     align-self: flex-start;
     cursor: pointer;
@@ -70,47 +74,41 @@ br {
     border: none;
 }
 
-.stat {
-    padding-right: 10px;
-}
-
-button:hover {
+#stats > button:hover {
     color: #ffd700;
 }
 
 #controls {
     background-color: burlywood;
+    justify-content: space-around;
     padding: 0;
     border: 1px solid black;
 }
 
 #controls > button {
-    display: block;
+    box-sizing: border-box;
+    display: none;
     margin: 5px auto;
     cursor: pointer;
-    font-family: monospace;
+    font-family: Merriweather, sans-serif;
     text-align: center;
-    color: #fafad2;
-    background-color: #556b2f;
-    background-image: linear-gradient(#6b8e23, #556b2f);
-    border: 3px solid #556b2f;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    color: #0a1128;
+    background-color: burlywood;
+    min-width: 36px;
+    border: 2px solid #0a1128;
+    padding: 3px 5px;
 }
 
 #controls > button:hover {
-    color: #1e1e2e;
-    background-color: #ffd700;
-    background-image: linear-gradient(#fff1a4, #ffd700);
-    border: 3px solid #000000;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    color: burlywood;
+    background-color: #0a1128;
+    border: 2px solid #0a1128;
 }
 
 #monsterStats {
     padding-top: 5px;
     display: none;
-    border: 1px solid #1e1e2e;
+    border: 1px solid #0a1128;
     background-color: #c70d0d;
     color: #ffffff;
     font-size: 0.8rem;
@@ -121,8 +119,8 @@ button:hover {
 }
 
 .progressbar-background {
-    background-color: #1e1e2e;
-    height: 0.2rem;
+    background-color: #000000;
+    height: 0.4rem;
 }
 
 #monsterHealthBar {
@@ -130,7 +128,7 @@ button:hover {
     text-align: left;
     background-color: #8b0000;
     width: 100%;
-    height: 0.2rem;
+    height: 0.4rem;
 }
 
 hr {
@@ -159,7 +157,7 @@ hr {
 .text {
     display: block;
     width: 100%;
-    background-color: #1e1e2e;
+    background-color: #0a1128;
     font-family: Merriweather, sans-serif;
     color: #ffffff;
     padding: 10px;
@@ -200,6 +198,11 @@ hr {
 @media only screen and (max-width: 767px) {
     #combat-logs {
         max-height: 12rem;
+    }
+
+    #controls > button {
+        min-height: 40px;
+        min-width: 40px;
     }
 }
 
