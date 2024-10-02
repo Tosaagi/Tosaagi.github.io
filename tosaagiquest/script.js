@@ -98,7 +98,7 @@ const scenes = [
         name: "Main-Screen",
         buttonTexts: ["New Adventure!"],
         buttonFunctions: ["prologue"],
-        text: `<p class="middle">Welcome to <span class="title">Tosaagi's Quest</span>! Explore the land of Haspethia, fight evil monsters, and beat the cursed dragon! Are you ready to make your choices?</p>`,
+        text: `<p class="middle">Welcome to <span class="title">Tosaagi's Quest</span>! Explore the land of Morrdevar, fight evil monsters, and beat the cursed dragon! Are you ready to make your choices?</p>`,
         image: `<img src="assets/images/scenes/title_scene.gif">`,
         style: {
             "justify-content": "center",
@@ -110,7 +110,7 @@ const scenes = [
         name: "Introduction",
         buttonTexts: ["Begin Adventure!"],
         buttonFunctions: [goTown],
-        text: "This is the prologue."
+        text: "A mysterious current of magic has always found its way to flow throughout the continent of Esparthia, a land where all kinds of diverse creatures live. While some—beasts and men—recognize its incredible power and try to harness it to its fullest, many have fallen victim to the unspeakable darkness, and have been cursed for eternity. Despite the inevitable risks, the battle to change the tip of balance in the control of this dangerous substance grows ever stronger. However, even amidst the chaos that ensues, a noble hero will come to end it all..."
     },
     {
         id: "upgradePlayerStat",
