@@ -7,52 +7,57 @@
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <script type="module" src="script.js"></script>
 </head>
 <body>
-    <h1><span class="title">Tosaagi's Quest</span></h1>
+    <h1 translate="no"><span class="title">Tosaagi's Quest</span></h1>
     <div id="game">
-        <div id="stats">
-            <div id="full-stats">
-                <span class="stat"><strong><span id="playerNameText"></span></strong></span>
-                <br>
-                <span class="stat">LV: <strong><span id="levelText"></span></strong></span>
-                <span class="stat">HP: <strong><span id="healthText"></span></strong></span>
-                <span class="stat">XP: <strong><span id="experienceText"></span></strong></span>
-                <br>
-                <span class="stat">STR: <strong><span id="strengthText"></span></strong></span>
-                <span class="stat">DEF: <strong><span id="defenseText"></span></strong></span>
-                <br>
-                <span class="stat">GP: <strong><span id="goldText"></span></strong></span>
+        <div id="player-stats">
+            <div id="stats">
+                <div id="full-stats" translate="no">
+                    <span class="stat"><strong><span id="playerNameText"></span></strong></span>
+                    <br>
+                    <span class="stat">LV: <strong><span id="playerLevelText"></span></strong></span>
+                    <span class="stat">HP: <strong><span id="playerHealthText"></span></strong></span>
+                    <span class="stat">XP: <strong><span id="playerExperienceText"></span></strong></span>
+                    <br>
+                    <span class="stat">STR: <strong><span id="playerStrengthText"></span></strong></span>
+                    <span class="stat">DEF: <strong><span id="playerDefenseText"></span></strong></span>
+                    <br>
+                    <span class="stat">GP: <strong><span id="playerGoldText"></span></strong></span>
+                    <br>
+                    <span class="stat">UP: <strong><span id="playerUpgradePointsText"></span></strong></span>
+                </div>
+                <div id="short-stats">
+                    <span class="stat">LV: <strong><span id="game-levelText">1</span></strong></span>
+                    <span class="stat">HP: <strong><span id="game-healthText">100</span></strong></span>
+                    <span class="stat">GP: <strong><span id="game-goldText">10</span></strong></span>
+                </div>
+                <button id="button0">stats</button>
             </div>
-            <div id="short-stats">
-                <span class="stat">LV: <strong><span id="game-levelText">1</span></strong></span>
-                <span class="stat">HP: <strong><span id="game-healthText">100</span></strong></span>
-                <span class="stat">GP: <strong><span id="game-goldText">10</span></strong></span>
-            </div>
-            <button id="button0">stats</button>
+            <button id="upgradeStatButton">UPGRADE STAT</span>
         </div>
         <div id="monsterStats">
             <span class="stat">Fighting: <strong><span id="monsterName"></span></strong></span>
-            <span class="stat">HP: <strong><span id="monsterHealth"></span></strong></span>
+            <span class="stat" translate="no">HP: <strong><span id="monsterHealth"></span></strong></span>
             <div class="progressbar-background">
                 <div id="monsterHealthBar"></div>
             </div>
         </div>
-        <div class="text" id="text">
+        <div id="text">
             
         </div>
         <div id="controls">
             <button id="button1" accesskey="1"></button>
             <button id="button2" accesskey="2"></button>
             <button id="button3" accesskey="3"></button>
-            <button id="button4" accesskey="3"></button>
-            <button id="button5" accesskey="3"></button>
-            <button id="button6" accesskey="3"></button>
-            <button id="button7" accesskey="3"></button>
+            <button id="button4" accesskey="4"></button>
+            <button id="button5" accesskey="5"></button>
+            <button id="button6" accesskey="6"></button>
+            <button id="button7" accesskey="7"></button>
         </div>
     </div>
     <div class="text" id="combat-logs">
     </div>
-    <script src="./script.js"></script>
 </body>
 </html>

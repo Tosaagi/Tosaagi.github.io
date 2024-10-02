@@ -17,3 +17,9 @@ Version 0.6.1
 -Added an attack sound effect to enhance combat feedback
 -Updated button fonts
 -Fixed minor bugs
+
+Version 0.7.0-beta
+-Added pixelated game artwork
+-Added a new stat: Upgrade Points (UP)
+-Added leveling up system
+-Added stats upgrading system

@@ -17,6 +17,11 @@ h1 {
     margin-top: 30px;
 }
 
+p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
 .title {
     color: #ffd700;
     font-family: Cinzel, sans-serif;
@@ -54,6 +59,24 @@ h1 {
 
 #full-stats > span {
     display: block;
+    margin: 0.2rem 0;
+}
+
+#player-stats > button {
+    display: none;
+    color: #000000;
+    background-color: #ffffff;
+    border: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    margin: 5px 0;
+    border: 1px solid #000000;
+}
+
+#player-stats > button:hover {
+    color: #ffffff;
+    background-color: #000000;
+    cursor: pointer;
 }
 
 br {
@@ -83,6 +106,7 @@ br {
     justify-content: space-around;
     padding: 0;
     border: 1px solid black;
+    overflow: scroll;
 }
 
 #controls > button {
@@ -95,19 +119,20 @@ br {
     color: #0a1128;
     background-color: burlywood;
     min-width: 36px;
-    border: 2px solid #0a1128;
+    border: 3px solid #0a1128;
     padding: 3px 5px;
 }
 
 #controls > button:hover {
     color: burlywood;
     background-color: #0a1128;
-    border: 2px solid #0a1128;
+    border: 3px solid #0a1128;
 }
 
 #monsterStats {
     padding-top: 5px;
     display: none;
+    height: 32px;
     border: 1px solid #0a1128;
     background-color: #c70d0d;
     color: #ffffff;
@@ -116,6 +141,31 @@ br {
 
 #monsterStats > .stat {
     padding: 5px 10px;
+}
+
+#text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #0a1128;
+    font-family: Merriweather, sans-serif;
+    width: 100%;
+    height: 310px;
+    padding: 20px;
+    overflow: scroll;
+}
+
+#text > img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    width: 50%;
+    border: 1px solid white;
+}
+
+#text > p:last-of-type {
+    margin-bottom: 0;
 }
 
 .progressbar-background {
@@ -200,6 +250,11 @@ hr {
         max-height: 12rem;
     }
 
+    #player-stats > button {
+        min-height: 20px;
+        min-width: 20px;
+    }
+
     #controls > button {
         min-height: 40px;
         min-width: 40px;
@@ -214,3 +269,8 @@ hr {
         saddle brown: [d2b48c, 8b4513],
         firebrick: [b22222, f08080],
 */
+
+.middle {
+    text-align: center;
+    width: 80%;
+}
