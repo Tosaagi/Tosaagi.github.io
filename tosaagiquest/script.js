@@ -331,7 +331,9 @@ function updateTexts(string, image = null) {
         text.innerHTML = image + text.innerHTML;
     }
 
-    text.scrollTo(0, text.scrollHeight);
+    if (texts.length > 3) {
+        text.scrollTo(0, text.scrollHeight);
+    }
 }
 
 function logEntryUpdate(log) {
