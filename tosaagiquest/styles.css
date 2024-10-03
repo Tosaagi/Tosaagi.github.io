@@ -274,3 +274,7 @@ hr {
     text-align: center;
     width: 80%;
 }
+
+.underlined {
+    text-decoration: underline;
+}
