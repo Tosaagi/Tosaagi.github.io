@@ -110,7 +110,7 @@ const scenes = [
         name: "Introduction",
         buttonTexts: ["Begin Adventure!"],
         buttonFunctions: [goTown],
-        text: "A mysterious current of magic has always found its way to flow throughout the continent of Esparthia, a land where all kinds of diverse creatures live. While some—beasts and men—recognize its incredible power and try to harness it to its fullest, many have fallen victim to the unspeakable darkness, and have been cursed for eternity. Despite the inevitable risks, the battle to change the tip of balance in the control of this dangerous substance grows ever stronger. However, even amidst the chaos that ensues, a noble hero will come to end it all..."
+        text: `&nbsp; &nbsp; <span class="underlined">Prologue</span> <br><br>&nbsp; &nbsp; A mysterious flow of magic has always found its way to spread throughout the continent of Esparthia. While some—beasts and men—acknowledge its incredible power and try to harness it to its fullest, many have fallen victim to the unspeakable curse, and doomed to eternity.<br><br>&nbsp; &nbsp; Despite the inevitable risks, the battle for control of this dangerous substance grows ever stronger. <br><br>&nbsp; &nbsp; However, even amidst the chaos that ensues, a noble hero will come to end it all...`
     },
     {
         id: "upgradePlayerStat",
