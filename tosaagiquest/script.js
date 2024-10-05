@@ -140,7 +140,8 @@ const scenes = [
                 text: "You enter the cave. You see some monsters."
             }
         ],
-        text: "You are in the Town Square. You see a sign that says \"Store\"."
+        text: `<p>You are in the Town Square. You see a sign that says "Store".</p>`,
+        image: `<img src="assets/images/scenes/main_town.gif">`
     },
     {
         id: "fight",
