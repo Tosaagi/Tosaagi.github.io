@@ -1,14 +1,14 @@
-import { modifyText, fadeOut } from "./effects.js";
+import { modifyText, fadeOut, verticalWipe, verticalWipeOut } from "./effects.js";
 
 const initializeStats = {
     pName: "Player",
     lvl: 1,
     xP: 0,
     xPR: 10,
-    hP: 100,
-    mxHP: 100,
-    def: 3,
-    str: 3,
+    hP: 10,
+    mxHP: 10,
+    def: 1,
+    str: 1,
     aP: 2,
     mxAP: 2,
     gP: 10,
@@ -25,27 +25,27 @@ const initializeStats = {
     mS: 0,
     mSC: 0,
     mCSI: 0
-};
+}; 
 
 const weapons = [
     {
         name: "Wooden Stick",
-        power: 5,
+        power: 1,
         price: 10
     },
     {
         name: "Silver Dagger",
-        power: 15,
+        power: 5,
         price: 30
     },
     {
         name: "Claw Hammer",
-        power: 30,
+        power: 15,
         price: 70
     },
     {
         name: "Glass Sword",
-        power: 75,
+        power: 30,
         price: 150
     }
 ];
@@ -54,28 +54,36 @@ const monsters = [
     {
         name: "Slime",
         color: "green",
-        level: 30,
-        health: 20,
-        strength: 10,
-        damageSpread: 2,
+        level: 1,
+        health: 5,
+        strength: 0,
+        damageSpread: 1,
         skills: {
                 name: ["Basic Attack", "Heavy Slam"],
                 cooldown: [0, 1],
-                extraDamage: [0, 20]
-            }
+                extraDamage: [0, 2]
+            },
+        loot: {
+            gold: 10,
+            xp: 2
+        }
     },
     {
         name: "Fanged Beast",
         color: "darkRed",
-        level: 8,
-        health: 60,
-        strength: 25,
-        damageSpread: 10,
+        level: 2,
+        health: 15,
+        strength: 5,
+        damageSpread: 2,
         skills: {
                 name: ["Bite", "Bloodlust Fang"],
                 cooldown: [0, 3],
-                extraDamage: [0, 40]
-            }
+                extraDamage: [0, 5]
+            },
+        loot: {
+            gold: 50,
+            xp: 10
+        }
     },
     {
         name: "Dragon",
@@ -88,7 +96,11 @@ const monsters = [
                 name: ["Claws", "Fire Breath"],
                 cooldown: [0, 3],
                 extraDamage: [0, 60]
-            }
+            },
+        loot: {
+            gold: 500,
+            xp: 100
+        }
     }
 ];
 
@@ -96,13 +108,14 @@ const scenes = [
     {
         id: "mainScreen",
         name: "Main-Screen",
-        buttonTexts: ["New Adventure!"],
-        buttonFunctions: ["prologue"],
-        text: `<p class="middle">Welcome to <span class="title">Tosaagi's Quest</span>! Explore the land of Morrdevar, fight evil monsters, and beat the cursed dragon! Are you ready to make your choices?</p>`,
+        buttonTexts: ["New Adventure!", "God Mode"],
+        buttonFunctions: ["prologue", godMode],
+        text: `Welcome to <span class="title">Tosaagi's Quest</span>! Explore the land of Morrdevar, fight evil monsters, and beat the cursed dragon! Are you ready to make your choices?`,
         image: `<img src="assets/images/scenes/title_scene.gif">`,
         style: {
             "justify-content": "center",
-            "align-items": "center"
+            "align-items": "center",
+            "text-align": "center"
         }
     },
     {
@@ -140,7 +153,7 @@ const scenes = [
                 text: "You enter the cave. You see some monsters."
             }
         ],
-        text: `<p>You are in the Town Square. You see a sign that says "Store".</p>`,
+        text: `You are in Morrdevar, the starting town. You see a store and a quest board.`,
         image: `<img src="assets/images/scenes/main_town.gif">`
     },
     {
@@ -219,6 +232,7 @@ let monsterNameTextModified;
 const fullStats = document.querySelector("#full-stats");
 const shortStats = document.querySelector("#short-stats");
 const monsterHealthBar = document.querySelector("#monsterHealthBar");
+const transition = document.querySelector("#transition");
 const buttons = document.querySelector("#controls");
 const text = document.querySelector("#text");
 const combatLogs = document.querySelector("#combat-logs");
@@ -276,9 +290,11 @@ function changeScene(sceneId, locationId = null) {
     if (currentScene.style) {
         text.style.justifyContent = [currentScene.style["justify-content"]];
         text.style.alignItems = [currentScene.style["align-items"]];
+        text.style.textAlign = [currentScene.style["text-align"]];
     } else {
         text.style.justifyContent = "flex-start";
         text.style.alignItems = "flex-start";
+        text.style.textAlign = "left";
     }
 
     if (playerUpgradePoints > 0) {
@@ -358,52 +374,92 @@ function convertXptoLevel() {
 }
 
 function getDamage(damage, damageRng) {
-    return (Math.floor((Math.random() * damageRng) + 1) - (damageRng / 2)) + damage;
+    return (Math.floor((Math.random() * damageRng) + 1) - Math.floor((damageRng / 2))) + damage;
+}
+
+function godMode() {
+    playerMaxHealth = 200;
+    playerHealth = 200;
+    playerGold = 9999;
+    playerStrength = 20;
+    playerDefense = 20;
+    playerLevel = 99;
+
+    playerLevelQuickText.innerText = 99;
+    playerHealthQuickText.innerText = 200;
+    playerGoldQuickText.innerText = 9999;
+
+    logEntryUpdate("God mode activated.");
 }
 
 // Player Actions
 function goTown() { // add parameter to tell which town
-    changeScene("firstTown");
-    fighting = null;
-    monsterName = "";
-    monsterHealth = 0;
-    monsterCurrentSkillIndex = 0;
+    verticalWipe(transition);
+
+    setTimeout(() => {
+        changeScene("firstTown");
+
+        fighting = null;
+        monsterName = "";
+        monsterHealth = 0;
+        monsterCurrentSkillIndex = 0;
+
+        verticalWipeOut(transition);
+    }, 400);
 }
 
 function goStore() {
-    changeScene("firstTown", "newbieStore");
+    verticalWipe(transition);
 
-    weaponPrice = weapons[currentWeaponIndex + 1].price;
-    button2.innerText = `Buy weapon (${weaponPrice} GP)`;
+    setTimeout(() => {
+        changeScene("firstTown", "newbieStore");
+
+        weaponPrice = weapons[currentWeaponIndex + 1].price;
+        button2.innerText = `Buy weapon (${weaponPrice} GP)`;
+
+        verticalWipeOut(transition);
+    }, 400);
 }
 
 function goCave() {
-    changeScene("firstTown", "newbieCave");
+    verticalWipe(transition);
+
+    setTimeout(() => {
+        changeScene("firstTown", "newbieCave");
+
+        verticalWipeOut(transition);
+    }, 400);
 }
 
 function goFight() {
-    changeScene("fight");
+    verticalWipe(transition);
 
-    monsterName = monsters[fighting].name;
-    monsterHealth = monsters[fighting].health;
-    monsterSkill = monsters[fighting].skills;
+    setTimeout(() => {
+        changeScene("fight");
 
-    monsterStats.style.display = "block";
-    monsterNameText.innerText = monsters[fighting].name;
-    monsterNameTextModified = modifyText(monsters[fighting].name, monsters[fighting].color, 3);
-    monsterHealthText.innerText = monsters[fighting].health;
-    monsterHealthBar.style.width = ("100%");
-    text.style.height = "calc(310px - 32px)";
+        monsterName = monsters[fighting].name;
+        monsterHealth = monsters[fighting].health;
+        monsterSkill = monsters[fighting].skills;
 
-    currentCombatIndex = 1;
-    currentTurnIndex = 0;
-    monsterSkillCooldown = 0;
+        monsterStats.style.display = "block";
+        monsterNameText.innerText = monsters[fighting].name;
+        monsterNameTextModified = modifyText(monsters[fighting].name, monsters[fighting].color, 3);
+        monsterHealthText.innerText = monsters[fighting].health;
+        monsterHealthBar.style.width = ("100%");
+        text.style.height = "calc(310px - 32px)";
 
-    buttons.style.display = "flex";
+        currentCombatIndex = 1;
+        currentTurnIndex = 0;
+        monsterSkillCooldown = 0;
 
-    combatLogs.style.display = "flex";
-    combatLogs.innerHTML = "<span id='combat-log'><span>[<span class='grey'>0</span>]<span class='grey'>Battle start.</span></span></span>";
-    combatLogs.innerHTML += "<hr>";
+        buttons.style.display = "flex";
+
+        combatLogs.style.display = "flex";
+        combatLogs.innerHTML = "<span id='combat-log'><span>[<span class='grey'>0</span>]<span class='grey'>Battle start.</span></span></span>";
+        combatLogs.innerHTML += "<hr>";
+
+        verticalWipeOut(transition);
+    }, 400);
 }
 
 function fightSlime() {
@@ -443,7 +499,7 @@ function attack() {
         }
     } else {
         // monster turn
-        monsterTurn(0);
+        monsterTurn();
     }
 
     console.log("Player Damage: " + playerDamage);
@@ -457,7 +513,7 @@ function defend() {
     logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${modifyText(playerName, "yellow", 3)} defend.</span>`;
     logEntryUpdate(logEntry);
 
-    monsterTurn(playerDefend);
+    monsterTurn();
 }
 
 // Player Stats Upgrade Functions
@@ -614,7 +670,7 @@ function sellWeapon() {
 
         playerGoldQuickText.innerText = playerGold;
         textMessage = `You sold a ${currentWeapon}.`;
-        textMessage = ` In your inventory you have: ${playerInventory}`;
+        textMessage += ` In your inventory you have: ${playerInventory}`;
     } else {
         textMessage = "You cannot sell your only weapon.";
     }
@@ -623,36 +679,38 @@ function sellWeapon() {
 }
 
 // Monsters Actions
-function monsterTurn(playerDef) {
+function monsterTurn() {
     monsterDamage = getDamage(monsters[fighting].strength, monsters[fighting].damageSpread) + monsterSkill.extraDamage[monsterCurrentSkillIndex];
-    if (playerDef) {
-        monsterDamage -= (playerDef * 5);
+    if (playerDefend === true) {
+        monsterDamage -= (playerDefend * 10);
     } else {
-        monsterDamage -= playerDef;
+        monsterDamage -= playerDefend;
     }
+
+    playerDefend = false;
         
-        if (monsterDamage <= 0) {
-            monsterDamage = 1;
-            playerHealth--;
-        } else {
-            playerHealth -= monsterDamage;
-        }
+    if (monsterDamage <= 0) {
+        monsterDamage = 1;
+        playerHealth--;
+    } else {
+        playerHealth -= monsterDamage;
+    }
 
-        playerHealthQuickText.innerText = playerHealth;
+    playerHealthQuickText.innerText = playerHealth;
 
-        logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${monsterNameTextModified} deals ${modifyText(monsterDamage, "damageRed", 2)} damage to ${playerNameTextModified} using [${monsterSkill.name[monsterCurrentSkillIndex]}].</span>`;
-        logEntryUpdate(logEntry);
-        
-        monsterPreparesAttack();
+    logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${monsterNameTextModified} deals ${modifyText(monsterDamage, "damageRed", 2)} damage to ${playerNameTextModified} using [${monsterSkill.name[monsterCurrentSkillIndex]}].</span>`;
+    logEntryUpdate(logEntry);
+    
+    monsterPreparesAttack();
 
-        if (playerHealth <= 0) {
-            lose();
-        }
+    if (playerHealth <= 0) {
+        lose();
+    }
 
-        if ((monsterSkill.cooldown[(monsterSkill.cooldown.length) - 1]) + 1 === monsterSkillCooldown) {
-            monsterSkillCooldown = 0;
-            monsterCurrentSkillIndex = 0;
-        }
+    if ((monsterSkill.cooldown[(monsterSkill.cooldown.length) - 1]) + 1 === monsterSkillCooldown) {
+        monsterSkillCooldown = 0;
+        monsterCurrentSkillIndex = 0;
+    }
     
     console.log("Monster Damage: " + monsterDamage);
 }
@@ -673,8 +731,8 @@ function monsterPreparesAttack() {
 }
 
 function defeatMonster() {
-    playerGold += Math.floor(monsters[fighting].level * 6.7);
-    playerXp += monsters[fighting].level;
+    playerGold += Math.floor(Math.random() * 5) - 2 + monsters[fighting].loot.gold;
+    playerXp += Math.floor(Math.random() * 2) + monsters[fighting].loot.xp;
     convertXptoLevel();
     fighting = null;
 

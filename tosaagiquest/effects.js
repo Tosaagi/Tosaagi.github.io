@@ -23,4 +23,50 @@ function fadeOut(element) {
     }, 50);
 }
 
-export {modifyText, fadeOut};
+function verticalWipe(element) {
+    element.style.display = "block"
+    element.style.bottom = "";
+    element.style.top = "0";
+    element.style.height = "20%";
+
+    setTimeout(() => {
+        element.style.height = "40%";
+
+        setTimeout(() => {
+            element.style.height = "60%";
+            
+            setTimeout(() => {
+                element.style.height = "80%";
+
+                setTimeout(() => {
+                    element.style.height = "100%";
+                }, 50);
+            }, 50);
+        }, 50);
+    }, 50);
+}
+
+function verticalWipeOut(element) {
+    element.style.top = "";
+    element.style.bottom = "0";
+    element.style.height = "80%";
+
+    setTimeout(() => {
+        element.style.height = "60%";
+
+        setTimeout(() => {
+            element.style.height = "40%";
+
+            setTimeout(() => {
+                element.style.height = "20%";
+
+                setTimeout(() => {
+                    element.style.display = "none";
+                    element.style.flexDirection = "row";
+                }, 50);
+            }, 50);
+        }, 50);
+    }, 50);
+}
+
+export {modifyText, fadeOut, verticalWipe, verticalWipeOut};
