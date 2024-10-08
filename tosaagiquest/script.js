@@ -77,7 +77,7 @@ const monsters = [
         damageSpread: 2,
         skills: {
                 name: ["Bite", "Bloodlust Fang"],
-                cooldown: [0, 3],
+                cooldown: [0, 2],
                 extraDamage: [0, 5]
             },
         loot: {
@@ -108,8 +108,8 @@ const scenes = [
     {
         id: "mainScreen",
         name: "Main-Screen",
-        buttonTexts: ["New Adventure!", "God Mode"],
-        buttonFunctions: ["prologue", godMode],
+        buttonTexts: ["New Adventure!", "hesoyam"],
+        buttonFunctions: ["prologue", hesoyam],
         text: `Welcome to <span class="title">Tosaagi's Quest</span>! Explore the land of Morrdevar, fight evil monsters, and beat the cursed dragon! Are you ready to make your choices?`,
         image: `<img src="assets/images/scenes/title_scene.gif">`,
         style: {
@@ -123,7 +123,10 @@ const scenes = [
         name: "Introduction",
         buttonTexts: ["Begin Adventure!"],
         buttonFunctions: [goTown],
-        text: `&nbsp; &nbsp; <span class="underlined">Prologue</span> <br><br>&nbsp; &nbsp; A mysterious flow of magic has always found its way to spread throughout the continent of Esparthia. While some—beasts and men—acknowledge its incredible power and try to harness it to its fullest, many have fallen victim to the unspeakable curse, and doomed to eternity.<br><br>&nbsp; &nbsp; Despite the inevitable risks, the battle for control of this dangerous substance grows ever stronger. <br><br>&nbsp; &nbsp; However, even amidst the chaos that ensues, a noble hero will come to end it all...`
+        text: `&nbsp; &nbsp; <span class="underlined">Prologue</span> 
+                <br><br>&nbsp; &nbsp; A mysterious flow of magic has always found its way to spread throughout the continent of Esparthia. While some—beasts and men—acknowledge its incredible power and try to harness it to its fullest, many have fallen victim to the unspeakable curse, and doomed to eternity.
+                <br><br>&nbsp; &nbsp; Despite the inevitable risks, the battle for control ver this dangerous substance grows ever stronger. 
+                <br><br>&nbsp; &nbsp; However, even amidst the chaos that ensues, a noble hero will come to end it all...`
     },
     {
         id: "upgradePlayerStat",
@@ -190,6 +193,7 @@ const scenes = [
 const attackSound = new Audio("./assets/sounds/swordSlash_2.mp3");
 
 // Game Variables
+let currentScene;
 let fighting = initializeStats.fI;
 let logEntry = initializeStats.lE;
 let currentCombatIndex = initializeStats.cCI;
@@ -274,8 +278,17 @@ const monsterHealthText = document.querySelector("#monsterHealth");
 
 // Game Methods
 function changeScene(sceneId, locationId = null) {
+    closeStats();
     texts = [];
-    let [currentScene] = scenes.filter((scene) => scene.id === sceneId);
+
+    if(playerUpgradePoints > 0) {
+        button0.style.color = "red";
+    } else {
+        button0.style.color = "#000000";
+    }
+
+    let [currentSceneTemp] = scenes.filter((scene) => scene.id === sceneId);
+    currentScene = currentSceneTemp;
 
     monsterStats.style.display = "none";
 
@@ -284,7 +297,6 @@ function changeScene(sceneId, locationId = null) {
         updateTexts(currentScene.text, currentScene.image);
     } else {
         updateTexts(currentScene.text, currentScene.image);
-        texts = [];
     }
 
     if (currentScene.style) {
@@ -297,14 +309,88 @@ function changeScene(sceneId, locationId = null) {
         text.style.textAlign = "left";
     }
 
-    if (playerUpgradePoints > 0) {
+    text.style.height = "310px";
+
+    enableButtons();
+
+    buttons.style.display = "block";
+    combatLogs.style.display = "none";
+}
+
+function updateTexts(string, image = null) {
+    texts.push(string);
+    if (texts.length > 20) {
+        texts.shift();
+    }
+
+    text.innerHTML = texts.reduce((acc, string) => acc + `<p>${string}</p>`, "");
+
+    if (image) {
+        text.innerHTML = image + text.innerHTML;
+    }
+
+    if (texts.length > 3) {
+        text.scrollTo(0, text.scrollHeight);
+    }
+
+    console.log(texts);
+}
+
+function logEntryUpdate(log) {
+    if (log === "newTurn"){
+        combatLogs.innerHTML = (`<span id='combat-log' class='grey'><span></span><span>Turn: ${currentTurnIndex}</span></span>${combatLogs.innerHTML}`);
+    } else {
+        combatLogs.innerHTML = (`<span id='combat-log'>${log}</span>${combatLogs.innerHTML}`);
+        currentCombatIndex++;
+    }
+}
+
+function convertXptoLevel() {
+    while ((playerXp) >= playerNextLevelMinXp) {
+        playerXp -= playerNextLevelMinXp;
+        playerLevel++;
+        playerNextLevelMinXp += ((playerLevel - 1) * 10);
+        playerUpgradePoints += 2;
+    }
+
+    if(playerUpgradePoints > 0 && fullStats.style.display === "block") {
         upgradeStatButton.style.display = "block";
     } else {
         upgradeStatButton.style.display = "none";
     }
 
-    text.style.height = "310px";
+    playerLevelQuickText.innerText = playerLevel;
+}
 
+function getDamage(damage, damageRng) {
+    return (Math.floor((Math.random() * damageRng) + 1) - Math.floor((damageRng / 2))) + damage;
+}
+
+function hesoyam() {
+    playerMaxHealth += 40;
+    playerHealth += 40;
+    playerGold += 100;
+    playerStrength += 5;
+    playerDefense += 5;
+    playerXp += 20;
+
+    playerLevelQuickText.innerText = playerLevel;
+    playerHealthQuickText.innerText = playerHealth;
+    playerGoldQuickText.innerText = playerGold;
+
+    convertXptoLevel();
+
+    combatLogs.style.display = "flex";
+    logEntryUpdate("Cheat activated.");
+}
+
+function disableButtons() {
+    controlButtons.forEach((button, index) => {
+        button.onclick = null;
+    }); 
+}
+
+function enableButtons() {
     controlButtons.forEach((button, index) => {
         let currentButtonFunction = currentScene.buttonFunctions[index];
         if (currentButtonFunction) {
@@ -331,65 +417,6 @@ function changeScene(sceneId, locationId = null) {
             button.style.display = "none";
         }
     });
-
-    buttons.style.display = "block";
-    combatLogs.style.display = "none";
-}
-
-function updateTexts(string, image = null) {
-    texts.push(string);
-    if (texts.length > 10) {
-        texts.shift();
-    }
-
-    text.innerHTML = texts.reduce((acc, string) => acc + `<p>${string}</p>`, "");
-
-    if (image) {
-        text.innerHTML = image + text.innerHTML;
-    }
-
-    if (texts.length > 3) {
-        text.scrollTo(0, text.scrollHeight);
-    }
-}
-
-function logEntryUpdate(log) {
-    if (log === "newTurn"){
-        combatLogs.innerHTML = (`<span id='combat-log' class='grey'><span></span><span>Turn: ${currentTurnIndex}</span></span>${combatLogs.innerHTML}`);
-    } else {
-        combatLogs.innerHTML = (`<span id='combat-log'>${log}</span>${combatLogs.innerHTML}`);
-        currentCombatIndex++;
-    }
-}
-
-function convertXptoLevel() {
-    while ((playerXp) >= playerNextLevelMinXp) {
-        playerXp -= playerNextLevelMinXp;
-        playerLevel++;
-        playerNextLevelMinXp += ((playerLevel - 1) * 10);
-        playerUpgradePoints += 2;
-    }
-
-    playerLevelQuickText.innerText = playerLevel;
-}
-
-function getDamage(damage, damageRng) {
-    return (Math.floor((Math.random() * damageRng) + 1) - Math.floor((damageRng / 2))) + damage;
-}
-
-function godMode() {
-    playerMaxHealth = 200;
-    playerHealth = 200;
-    playerGold = 9999;
-    playerStrength = 20;
-    playerDefense = 20;
-    playerLevel = 99;
-
-    playerLevelQuickText.innerText = 99;
-    playerHealthQuickText.innerText = 200;
-    playerGoldQuickText.innerText = 9999;
-
-    logEntryUpdate("God mode activated.");
 }
 
 // Player Actions
@@ -478,6 +505,8 @@ function fightDragon() {
 }
 
 function attack() {
+    attackSound.play();
+
     currentTurnIndex++;
     logEntryUpdate("newTurn");
 
@@ -486,9 +515,11 @@ function attack() {
     monsterHealthBar.style.width = ((monsterHealth / monsters[fighting].health) * 100 + "%");
     monsterHealthText.innerText = monsterHealth;
 
-    attackSound.play();
     logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${playerNameTextModified} deals ${modifyText(playerDamage, "damageRed", 2)} damage to ${monsterNameTextModified} using [${weapons[currentWeaponIndex].name}].</span>`;
     logEntryUpdate(logEntry);
+
+    updateTexts(`<hr>`);
+    updateTexts(`You attacked the ${monsterName}, dealing ${modifyText(playerDamage, "damageRed", 2)} damage.`);
 
     // check battle condition
     if (monsterHealth <= 0) {
@@ -499,7 +530,13 @@ function attack() {
         }
     } else {
         // monster turn
-        monsterTurn();
+        disableButtons();
+
+        setTimeout(() => {
+            monsterTurn();
+
+            enableButtons();
+        }, 1000);
     }
 
     console.log("Player Damage: " + playerDamage);
@@ -513,7 +550,16 @@ function defend() {
     logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${modifyText(playerName, "yellow", 3)} defend.</span>`;
     logEntryUpdate(logEntry);
 
-    monsterTurn();
+    updateTexts(`<hr>`);
+    updateTexts("You took a defensive position.");
+
+    disableButtons();
+
+    setTimeout(() => {
+        monsterTurn();
+
+        enableButtons();
+    }, 1000);
 }
 
 // Player Stats Upgrade Functions
@@ -522,8 +568,8 @@ function upgrade(stat) {
         switch (stat) {
             case "maxHp":
                 let oldMaxHealth = playerMaxHealth;
-                playerMaxHealth += 10;
-                playerHealth += 10;
+                playerMaxHealth += 5;
+                playerHealth += 5;
                 playerHealthQuickText.innerText = playerHealth;
                 playerHealthText.innerText = `${playerHealth}/${playerMaxHealth}`
                 textMessage = `You've increased your max HP (${oldMaxHealth} -> ${playerMaxHealth}).`;
@@ -552,6 +598,7 @@ function upgrade(stat) {
         textMessage = "You don't have enough UP.";
     }
 
+    playerUpgradePointsText.innerText = playerUpgradePoints;
     console.log(playerUpgradePoints);
     updateTexts(textMessage);
 }
@@ -584,6 +631,10 @@ function checkStats() {
     button0.innerText = "close";
     button0.onclick = closeStats;
 
+    if(playerUpgradePoints > 0 && fighting === null) {
+        upgradeStatButton.style.display = "block";
+    }
+
     monsterStats.style.display = "none";
     combatLogs.style.display = "none";
     buttons.style.display = "none";
@@ -604,6 +655,8 @@ function closeStats() {
     button0.innerText = "stats";
     button0.onclick = checkStats;
     text.style.display = "flex";
+
+    upgradeStatButton.style.display = "none";
 }
 
 function buyHealth() {
@@ -680,6 +733,8 @@ function sellWeapon() {
 
 // Monsters Actions
 function monsterTurn() {
+    attackSound.play();
+
     monsterDamage = getDamage(monsters[fighting].strength, monsters[fighting].damageSpread) + monsterSkill.extraDamage[monsterCurrentSkillIndex];
     if (playerDefend === true) {
         monsterDamage -= (playerDefend * 10);
@@ -700,12 +755,14 @@ function monsterTurn() {
 
     logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${monsterNameTextModified} deals ${modifyText(monsterDamage, "damageRed", 2)} damage to ${playerNameTextModified} using [${monsterSkill.name[monsterCurrentSkillIndex]}].</span>`;
     logEntryUpdate(logEntry);
-    
-    monsterPreparesAttack();
+
+    updateTexts(`${monsterNameTextModified} attacks! Dealing ${modifyText(monsterDamage, "damageRed", 2)} damage to You.`);
 
     if (playerHealth <= 0) {
         lose();
     }
+
+    monsterPreparesAttack();
 
     if ((monsterSkill.cooldown[(monsterSkill.cooldown.length) - 1]) + 1 === monsterSkillCooldown) {
         monsterSkillCooldown = 0;
@@ -722,10 +779,16 @@ function monsterPreparesAttack() {
 
         logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${monsterNameTextModified} prepares a ${modifyText("special", "purple", 3)} attack.</span>`;
         logEntryUpdate(logEntry);
+
+        updateTexts(`${monsterNameTextModified} prepares a ${modifyText("special", "purple", 2)} attack.`);
+
         monsterCurrentSkillIndex++;
 
     } else {
         logEntry = `<span>[${modifyText(currentCombatIndex, "grey", 2)}]</span><span> ${monsterNameTextModified} readies a basic attack.</span>`;
+
+        updateTexts(`${monsterNameTextModified} prepares a ${modifyText("basic", "grey", 2)} attack.`);
+
         logEntryUpdate(logEntry);
     }
 }
