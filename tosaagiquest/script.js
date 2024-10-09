@@ -31,22 +31,32 @@ const weapons = [
     {
         name: "Wooden Stick",
         power: 1,
-        price: 10
+        price: 10,
+        rarity: "common"
     },
     {
         name: "Silver Dagger",
         power: 5,
-        price: 30
+        price: 30,
+        rarity: "uncommon"
+    },
+    {
+        name: "Iron Lance",
+        power: 10,
+        price: 45,
+        rarity: "uncommon"
     },
     {
         name: "Claw Hammer",
         power: 15,
-        price: 70
+        price: 70,
+        rarity: "rare"
     },
     {
         name: "Glass Sword",
         power: 30,
-        price: 150
+        price: 150,
+        rarity: "epic"
     }
 ];
 
@@ -144,8 +154,9 @@ const scenes = [
             {
                 id: "newbieStore",
                 name: "Store",
-                buttonTexts: ["Restore HP (10 GP)", "Buy weapon (GP)", "Go to town square"],
-                buttonFunctions: [buyHealth, buyWeapon, goTown],
+                buttonTexts: ["Restore HP (10 GP)", "Buy Weapon", "Go to Town Square"],
+                buttonFunctions: [buyHealth, seeWeapons, goTown],
+                weaponList: [weapons[0], weapons[1], weapons[2], weapons[3], weapons[4]],
                 text: "You enter the store."
             },
             {
@@ -189,6 +200,15 @@ const scenes = [
     }
 ];
 
+/*const encounter = [
+ *   {
+ *       id: "e01",
+ *       name: "Red-Riding-Hood",
+ *       buttonTexts: ["Buy 1 match (1 GP)", ""]
+ *   }
+ *];
+ */
+
 // Audio Assets
 const attackSound = new Audio("./assets/sounds/swordSlash_2.mp3");
 
@@ -217,8 +237,9 @@ let playerGold = initializeStats.gP;
 let playerUpgradePoints = initializeStats.uP;
 let currentWeaponIndex = initializeStats.cWI;
 let playerDamage;
+let playerCurrentWeapon;
 let playerDefend = false;
-let playerInventory = [weapons[0].name];
+let playerWeaponInventory = [weapons[0]];
 
 // Monster Stats Initialization
 let monsterName = initializeStats.mNm;
@@ -239,6 +260,10 @@ const monsterHealthBar = document.querySelector("#monsterHealthBar");
 const transition = document.querySelector("#transition");
 const buttons = document.querySelector("#controls");
 const text = document.querySelector("#text");
+const inventoryContainer = document.querySelector("#inventory");
+const inventoryCategory = document.querySelector("#inventory-category");
+const inventoryBox = document.querySelector("#inventory-box");
+viewInventory("weapons");
 const combatLogs = document.querySelector("#combat-logs");
 
 // Buttons
@@ -313,7 +338,6 @@ function changeScene(sceneId, locationId = null) {
 
     enableButtons();
 
-    buttons.style.display = "block";
     combatLogs.style.display = "none";
 }
 
@@ -332,8 +356,6 @@ function updateTexts(string, image = null) {
     if (texts.length > 3) {
         text.scrollTo(0, text.scrollHeight);
     }
-
-    console.log(texts);
 }
 
 function logEntryUpdate(log) {
@@ -391,6 +413,9 @@ function disableButtons() {
 }
 
 function enableButtons() {
+    buttons.style.display = "flex";
+    buttons.style.flexDirection = "column";
+
     controlButtons.forEach((button, index) => {
         let currentButtonFunction = currentScene.buttonFunctions[index];
         if (currentButtonFunction) {
@@ -441,9 +466,6 @@ function goStore() {
     setTimeout(() => {
         changeScene("firstTown", "newbieStore");
 
-        weaponPrice = weapons[currentWeaponIndex + 1].price;
-        button2.innerText = `Buy weapon (${weaponPrice} GP)`;
-
         verticalWipeOut(transition);
     }, 400);
 }
@@ -479,7 +501,7 @@ function goFight() {
         currentTurnIndex = 0;
         monsterSkillCooldown = 0;
 
-        buttons.style.display = "flex";
+        buttons.style.flexDirection = "row";
 
         combatLogs.style.display = "flex";
         combatLogs.innerHTML = "<span id='combat-log'><span>[<span class='grey'>0</span>]<span class='grey'>Battle start.</span></span></span>";
@@ -487,6 +509,18 @@ function goFight() {
 
         verticalWipeOut(transition);
     }, 400);
+}
+
+function wander() {
+    let encounterType = Math.floor(Math.random() * 2);
+
+    switch (encounterType) {
+        case 0:
+            fighting = Math.floor(Math.random() * 2);
+            goFight();
+            break
+        case 1:
+    }
 }
 
 function fightSlime() {
@@ -510,7 +544,7 @@ function attack() {
     currentTurnIndex++;
     logEntryUpdate("newTurn");
 
-    playerDamage = playerStrength + weapons[currentWeaponIndex].power; // player damage
+    playerDamage = playerStrength + playerCurrentWeapon.power; // player damage
     monsterHealth -= playerDamage;
     monsterHealthBar.style.width = ((monsterHealth / monsters[fighting].health) * 100 + "%");
     monsterHealthText.innerText = monsterHealth;
@@ -619,6 +653,7 @@ function upgradeDefense() {
 function checkStats() {
     fullStats.style.display = "block";
     shortStats.style.display = "none";
+    inventoryContainer.style.display = "block";
 
     playerNameText.innerText = `"${playerName}"`;
     playerLevelText.innerText = playerLevel;
@@ -635,6 +670,12 @@ function checkStats() {
         upgradeStatButton.style.display = "block";
     }
 
+    viewInventory("weapons");
+
+    inventoryCategory.onchange = (() => {
+        viewInventory(inventoryCategory.value);
+    });
+
     monsterStats.style.display = "none";
     combatLogs.style.display = "none";
     buttons.style.display = "none";
@@ -645,18 +686,46 @@ function closeStats() {
     if (fighting !== null) {
         monsterStats.style.display = "block";
         combatLogs.style.display = "flex";
-        buttons.style.display = "flex";
-    } else {
-        buttons.style.display = "block";
+        buttons.style.flexDirection = "row";
     }
 
     fullStats.style.display = "none";
     shortStats.style.display = "flex";
+    inventoryContainer.style.display = "none";
     button0.innerText = "stats";
     button0.onclick = checkStats;
+    buttons.style.display = "flex";
     text.style.display = "flex";
 
     upgradeStatButton.style.display = "none";
+}
+
+function changeCurrentWeapon(i) {
+    playerCurrentWeapon = playerWeaponInventory[i];
+    console.log(playerCurrentWeapon);
+}
+
+function viewInventory(invCategory) {
+    let selectedCategory;
+
+    switch (invCategory) {
+        case "weapons":
+            selectedCategory = playerWeaponInventory;
+    }
+
+    inventoryBox.innerHTML = "";
+
+    selectedCategory.forEach((item, index) => {
+        let thisButton = document.createElement("button");
+        thisButton.innerHTML = `${modifyText(item.name, item.rarity, 2)}`;
+        // `<button class="middle ${item.rarity}">${item.name}</button>`;
+
+        thisButton.addEventListener("click", () => {changeCurrentWeapon(index)});
+
+        addTooltip(thisButton, modifyText(item.name, item.rarity, 2), `Power: ${item.power}`, `Price: ${item.price}`);
+
+        inventoryBox.appendChild(thisButton);
+    });
 }
 
 function buyHealth() {
@@ -682,54 +751,114 @@ function buyHealth() {
     updateTexts(textMessage);
 }
 
-function buyWeapon() {
-    if (currentWeaponIndex < weapons.length - 1) {
-        if (playerGold >= weaponPrice) { // cwi = 2
-            playerGold -= weaponPrice;
-            currentWeaponIndex++; //cwi = 3
+function seeWeapons() {
+    updateTexts("You decided to check the weaponry section. You see a wide variety of weapons.");
 
-            // 
-            if (currentWeaponIndex !== weapons.length - 1) {
-                weaponPrice = weapons[currentWeaponIndex + 1].price;
-                button2.innerText = `Buy weapon (${weaponPrice} GP)`;
-            } 
+    controlButtons.forEach((button, index) => {
+        let availableWeapon = currentScene.weaponList[index];
+        button.style.display = "block";
 
-            let newWeapon = weapons[currentWeaponIndex].name;
-            playerInventory.push(newWeapon);
+        if (availableWeapon) {
+            buttons.style.flexDirection = "row";
+            button.innerHTML = modifyText(availableWeapon.name, availableWeapon.rarity, 2);
+            button.onclick = (() => buyWeapon(availableWeapon));
+
+            addTooltip(button, modifyText(availableWeapon.name, availableWeapon.rarity, 2), `Power: ${availableWeapon.power}`, `Price: ${availableWeapon.price}`);
+
+        } else if (index === 6) {
+            button.innerText = "Go Back";
+            button.onclick = goStore;
+        } else {
+            button.style.display = "none";
+        }
+    });
+}
+
+function addTooltip(element, text1, text2 = null, text3 = null) {
+    let thisElementTooltip = document.createElement("div");
+    thisElementTooltip.classList.add("tooltip");
+    thisElementTooltip.innerHTML = (`<p>${text1}</p>`);
+
+    if (text2 !== null) {
+        thisElementTooltip.innerHTML += (`<p>${text2}</p>`);
+    }
+
+    if (text3 !== null) {
+        thisElementTooltip.innerHTML += (`<p>${text3}</p>`);
+    }
+
+    element.appendChild(thisElementTooltip);
+}
+
+function buyWeapon(selectedWeapon) {
+    console.log(selectedWeapon);
+
+    if (playerWeaponInventory.filter((item) => item.name === selectedWeapon.name).length > 0) {
+        textMessage = "You already have this weapon.";
+    } else {
+        if (playerGold >= selectedWeapon.price) {
+            playerGold -= selectedWeapon.price;
+            currentWeaponIndex++;
+
+            playerWeaponInventory.push(selectedWeapon);
 
             playerGoldQuickText.innerText = playerGold;
-            textMessage = `You now have a ${newWeapon}.`;
-            textMessage += ` In your inventory you have:\n${playerInventory}`;
-
+            textMessage = `You now have a ${selectedWeapon.name}`;
+            textMessage += ` In your inventory you have:\n${playerWeaponInventory.reduce((acc, item) => acc + " [" + item.name + "]", "")}`;
         } else {
-            textMessage = "You do not have enough GP to buy a weapon.";
+            textMessage = "You do not have enough GP to buy this weapon.";
         }
-    } else {
-        weaponPrice = weapons[0].price;
-
-        textMessage = "You already have the most powerful weapon!";
-        button2.innerText = "Sell weapon for 15 GP";
-        button2.onclick = sellWeapon;
     }
 
+    // if (currentWeaponIndex < weapons.length - 1) {
+    //     if (playerGold >= weaponPrice) { // cwi = 2
+    //         playerGold -= weaponPrice;
+    //         currentWeaponIndex++; //cwi = 3
+
+    //         // 
+    //         if (currentWeaponIndex !== weapons.length - 1) {
+    //             weaponPrice = weapons[currentWeaponIndex + 1].price;
+    //             button2.innerText = `Buy weapon (${weaponPrice} GP)`;
+    //         } 
+
+    //         let newWeapon = weapons[currentWeaponIndex].name;
+    //         playerInventory.push(newWeapon);
+
+    //         playerGoldQuickText.innerText = playerGold;
+    //         textMessage = `You now have a ${newWeapon}.`;
+    //         textMessage += ` In your inventory you have:\n${playerInventory}`;
+
+    //     } else {
+    //         textMessage = "You do not have enough GP to buy a weapon.";
+    //     }
+    // } else {
+    //     weaponPrice = weapons[0].price;
+
+    //     textMessage = "You already have the most powerful weapon!";
+    //     button2.innerText = "Sell weapon for 15 GP";
+    //     button2.onclick = sellWeapon;
+    // }
+
+    console.log(playerWeaponInventory);
     updateTexts(textMessage);
 }
 
-function sellWeapon() {
-    if (playerInventory.length > 1) {
-        playerGold += (weaponPrice - (Math.floor(weaponPrice / 2)));
-        weaponPrice = weapons[playerInventory.length - 1].price;
-        let currentWeapon = playerInventory.shift();
+/* function sellWeapon() {
+ *     if (playerWeaponInventory.length > 1) {
+ *         playerGold += (weaponPrice - (Math.floor(weaponPrice / 2)));
+ *         weaponPrice = weapons[playerWeaponInventory.length - 1].price;
+ *         let currentWeapon = playerWeaponInventory.shift();
 
-        playerGoldQuickText.innerText = playerGold;
-        textMessage = `You sold a ${currentWeapon}.`;
-        textMessage += ` In your inventory you have: ${playerInventory}`;
-    } else {
-        textMessage = "You cannot sell your only weapon.";
-    }
-
-    updateTexts(textMessage);
-}
+ *         playerGoldQuickText.innerText = playerGold;
+ *         textMessage = `You sold a ${currentWeapon}.`;
+ *         textMessage += ` In your inventory you have: ${playerWeaponInventory}`;
+ *     } else {
+ *         textMessage = "You cannot sell your only weapon.";
+ *     }
+ *
+ *     updateTexts(textMessage);
+ * }
+ */
 
 // Monsters Actions
 function monsterTurn() {
