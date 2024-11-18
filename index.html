@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media (max-width: 767px){
+        .hamburg {
+            position: fixed;
+            right: -60%;
+            top: 0;
+            width: 60%;
+            height: 100vh;
+            margin: 0;
+            transform: translateY(0);
+            transition: right 0.5s ease-in-out;
+        }
+
+        .move-left {
+            right: 0;
+        }
+
+        .move-right {
+            right: -60%;
+        }
+    }
+  </style>
+</head>
+<body class="font-sans">
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-gray-800 text-white z-10">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+      </a>
+      <button id="button-open-menu" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+      </button>
+      <div class="hamburg md:block md:w-auto bg-gray-800" id="navbar-default">
+        <ul class="font-medium flex flex-col justify-center p-4 md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-800">
+          <li class="self-end">
+            <button id="button-close-menu" type="button" class="inline-flex items-center p-2 pb-0 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+              <span class="sr-only">Close main menu</span>
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+            </button>
+          </li>
+          <li>
+            <a href="#welcome-section" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Welcome</a>
+          </li>
+          <li>
+            <a href="#projects" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Projects</a>
+          </li>
+          <li>
+            <a href="#contact" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contacts</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+
+  <!-- Welcome Section -->
+  <header id="welcome-section" class="h-screen flex flex-col justify-center items-center bg-gradient-to-b from-teal-400 to-teal-600 text-white text-center">
+    <h1 class="text-4xl md:text-6xl font-bold">Welcome to My Portfolio</h1>
+    <p class="text-xl md:text-2xl mt-4">Hi, I'm Vitto, a passionate developer!</p>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Projects Section -->
+    <section id="projects" class="py-12 bg-gray-100 text-center">
+      <h2 class="text-3xl font-bold mb-6">My Projects</h2>
+      <div class="space-y-4">
+        <div class="project-tile">
+          <a href="https://github.com/your-project-link" target="_blank" class="text-xl text-gray-800 font-semibold hover:text-teal-400">
+            Project 1
+          </a>
+        </div>
+        <div class="project-tile">
+          <a href="https://github.com/your-second-project-link" target="_blank" class="text-xl text-gray-800 font-semibold hover:text-teal-400">
+            Project 2
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-12 text-center">
+      <h2 class="text-3xl font-bold mb-6">Contact Me</h2>
+      <p class="mb-4">Feel free to reach out via 
+        <a href="mailto:your-email@example.com" class="text-teal-400 font-semibold">email</a>.
+      </p>
+      <a id="profile-link" href="https://github.com/your-github-profile" target="_blank" class="text-xl text-teal-400 font-semibold hover:underline">
+        Visit my GitHub Profile
+      </a>
+    </section>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttonOpenMenu = document.getElementById('button-open-menu');
+      const buttonCloseMenu = document.getElementById('button-close-menu');
+      const navbarMenu = document.getElementById('navbar-default');
+  
+      // Open the menu by adding the move-left class
+      buttonOpenMenu.addEventListener('click', () => {
+        navbarMenu.classList.remove('move-right'); // Ensure 'move-right' is removed
+        navbarMenu.classList.add('move-left');
+      });
+
+    // Close the menu by adding the move-right class
+      buttonCloseMenu.addEventListener('click', () => {
+        navbarMenu.classList.remove('move-left'); // Ensure 'move-left' is removed
+        navbarMenu.classList.add('move-right');
+      });
+      
+    });
+  </script>
+</body>
+</html>
