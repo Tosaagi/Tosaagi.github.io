@@ -1,0 +1,11 @@
+-The player currently only have 3 stats: xp, health, and gold. When in combat, the player can choose to attack or dodge enemy attack (currently, attacking and dodging has a 100% chance of successing)
+
+-The monsters currently only have 3 stats: level, health, and skills. Monsters can choose between using a basic attack or a special skill.
+
+-The game starts at a town square that act as the main location, with 3 different locations you can go to from there:
+    1. Store: You can heal yourself with a cost of 10 gold, and you can buy some weapon with 30 gold.
+    2. Cave: You can fight monsters to level up your character and gain some gold. Currently, there are only two monsters: Slime and fanged beast
+    3. Dragon lair: You can fight the final boss, the Dragon, to beat the game. This is the ultimate challenge, because only highly experienced player with the most overpowered weapon can beat this dragon.
+
+-The game has replayability mechanic. 
+-When in battle, player can view the combat logs to review their own and the monster's actions.

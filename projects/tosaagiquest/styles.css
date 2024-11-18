@@ -1,0 +1,385 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+}
+
+body {
+    background-color: #0a1128;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+h2 {
+    text-align: center;
+    color: #000000;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+p {
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.title {
+    color: #ffd700;
+    font-family: Cinzel, sans-serif;
+    font-weight: bold;
+}
+
+#game {
+    display: block;
+    max-width: 500px;
+    max-height: 600px;
+    background-color: #ffffff;
+    color:#ffffff;
+    margin: 0 auto;
+    padding: 10px;
+    overflow: hidden;
+}
+
+#controls, #stats {
+    width: 100%;
+    border: 1px solid #0a1128;
+    color: #0a1128;
+    padding: 5px;
+}
+
+#stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+#full-stats {
+    display: none;
+}
+
+#full-stats > span {
+    display: block;
+    margin: 0.2rem 0;
+}
+
+#player-stats > button {
+    display: none;
+    color: #000000;
+    background-color: #ffffff;
+    border: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    margin: 5px 0;
+    border: 1px solid #000000;
+}
+
+#player-stats > button:hover {
+    color: #ffffff;
+    background-color: #000000;
+    cursor: pointer;
+}
+
+br {
+    height: 1rem;
+}
+
+.stat {
+    padding-right: 10px;
+}
+
+#stats > button {
+    align-self: flex-start;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    text-decoration: underline;
+    background-color: #ffffff;
+    border: none;
+}
+
+#stats > button:hover {
+    color: #ffd700;
+}
+
+#controls {
+    max-height: 100%;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: burlywood;
+    justify-content: space-around;
+    padding: 0 10px;
+    border: 1px solid black;
+    overflow: visible;
+}
+
+#controls > button {
+    box-sizing: border-box;
+    position: relative;
+    display: none;
+    margin: 5px auto;
+    cursor: pointer;
+    font-family: Merriweather, sans-serif;
+    text-align: center;
+    color: #0a1128;
+    background-color: burlywood;
+    min-width: 36px;
+    border: 3px solid #0a1128;
+    padding: 3px 5px;
+}
+
+#controls > button:last-of-type {
+    margin: 5px 40%;
+    min-width: auto;
+}
+
+#controls > button:hover {
+    color: #0a1128;
+    background-color: #ffd700;
+    border: 3px solid #0a1128;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 125%;
+    display: none;
+    background-color: #fff;
+    color: #000;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: left;
+    padding: 3px;
+    border: 1px solid black;
+    width: max-content;
+    max-width: 150%;
+    z-index: 999;
+}
+
+.tooltip p {
+    margin: 0;
+    z-index: 999;
+}
+
+#controls > button:hover .tooltip, #inventory-box button:hover .tooltip {
+    display: block;
+}
+
+#monsterStats {
+    padding-top: 5px;
+    display: none;
+    height: 32px;
+    border: 1px solid #0a1128;
+    background-color: #c70d0d;
+    color: #ffffff;
+    font-size: 0.8rem;
+}
+
+#monsterStats > .stat {
+    padding: 5px 10px;
+}
+
+#text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #0a1128;
+    font-family: Merriweather, sans-serif;
+    width: 100%;
+    height: 310px;
+    padding: 20px;
+    overflow: scroll;
+}
+
+#text > img {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    width: 50%;
+    border: 1px solid white;
+}
+
+#text > p:last-of-type {
+    margin-bottom: 0;
+}
+
+.text-container {
+    position: relative;
+}
+
+#transition {
+    position: absolute;
+    background-color: #000000;
+    width: 100%;
+    height: 0%;
+    z-index: 999;
+}
+
+.progressbar-background {
+    background-color: #000000;
+    height: 0.4rem;
+}
+
+#monsterHealthBar {
+    margin-top: 3px;
+    text-align: left;
+    background-color: #8b0000;
+    width: 100%;
+    height: 0.4rem;
+}
+
+hr {
+    width: 100%;
+    max-width: 800px;
+}
+
+#combat-logs {
+    font-family: 'Courier New', Courier, monospace;
+    display: none;
+    flex-direction: column-reverse;
+    width: 100%;
+    max-width: 800px;
+    max-height: 22rem; 
+    margin: 10px auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#combat-log {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.text {
+    display: block;
+    width: 100%;
+    background-color: #0a1128;
+    font-family: Merriweather, sans-serif;
+    color: #ffffff;
+    padding: 10px;
+}
+
+#inventory {
+    display: none;
+    max-width: 500px;
+    max-height: 600px;
+    background-color: #ffffff;
+    color:#ffffff;
+    margin: 0 auto;
+    padding: 10px;
+    padding-top: 0;
+}
+
+#inventory-category {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 3px 5px;
+    border: 1px solid black;
+    background-color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#inventory-box {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+}
+
+#inventory-box button {
+    position: relative;
+    width: unset;
+    margin: 5px auto;
+    cursor: pointer;
+    font-family: Merriweather, sans-serif;
+    text-align: center;
+    background-color: #fff;
+    min-width: 36px;
+    border: 1px solid #000;
+    padding: 3px 5px;
+}
+
+.entity {
+    font-weight: bold;
+}
+
+.green {
+    color:greenyellow;
+}
+
+.uncommon {
+    color: green;
+}
+
+.rare {
+    color: aqua;
+}
+
+.yellow {
+    color: #ffd700;
+}
+
+.darkRed {
+    color: #8b0000;
+}
+
+.purple, .epic {
+    color: purple;
+}
+
+.blueViolet {
+    color: blueviolet;
+}
+
+.grey, .common {
+    color: grey;
+}
+
+.damageRed {
+    color: red;
+}
+
+@media only screen and (max-width: 767px) {
+    #combat-logs {
+        max-height: 12rem;
+    }
+
+    #player-stats > button {
+        min-height: 20px;
+        min-width: 20px;
+    }
+
+    #controls > button, #inventory-box > button {
+        min-height: 40px;
+        min-width: 40px;
+    }
+}
+
+/* colors:
+        gold: ffd700, 
+        light goldenrod yellow: fafad2,
+        dark red: [a52a2a, 8b0000],
+        dark olive: [6b8e23, 556b2f],
+        saddle brown: [d2b48c, 8b4513],
+        firebrick: [b22222, f08080],
+*/
+
+.middle {
+    text-align: center;
+    width: 80%;
+}
+
+.underlined {
+    text-decoration: underline;
+}
