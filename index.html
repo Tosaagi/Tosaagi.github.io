@@ -5,7 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Pacifico&display=swap" rel="stylesheet">
   <style>
+    html {
+      overflow-x: hidden;
+    }
+
+    nav, ul, .hamburg {
+      background-color: #3D3B40 !important;
+    }
+
+    #welcome-section {
+      background-color: #212638;
+    }
+
+    #profile-picture {
+      width: 200px;
+      height: 200px;
+    }
+
+    .inner-div {
+      width: 105%;
+      height: 80vw;
+      max-height: 40vh;
+      background-color: #FFD57E;
+      border-radius: 50%; /* Makes the inner div circular */
+      position: absolute;
+      top: -15%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .my-name {
+      font-weight: 100;
+    }
+
+    .project-img {
+      filter: brightness(80%);
+      transition: transform 0.5s ease, filter 0.5s ease;
+      box-shadow: 5px 5px 5px grey;
+      width: 600px;
+    }
+
+    .project-img:hover {
+      transform: scale(0.95);
+      filter: brightness(50%);
+    }
+
+    .project-title { 
+      position: absolute;
+      color:rgba(255,255,255,0);
+      transition: color 0.5s ease;
+      top: 50%;
+      left: 50%;
+      font-family: 'Montserrat', sans-serif;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+
     @media (max-width: 767px){
         .hamburg {
             position: fixed;
@@ -18,6 +76,11 @@
             transition: right 0.5s ease-in-out;
         }
 
+        #profile-picture {
+          width: 150px;
+          height: 150px;
+        }
+
         .move-left {
             right: 0;
         }
@@ -28,24 +91,24 @@
     }
   </style>
 </head>
-<body class="font-sans">
+<body style="font-family: 'Roboto Mono'; overflow-y: hidden;">
   <!-- Navbar -->
-  <nav class="fixed top-0 w-full bg-gray-800 text-white z-10">
+  <nav class="fixed top-0 w-full text-white z-10" style="max-width: 100vw;">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
       <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
           <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-          <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+          <span class="self-center text-2xl font-semibold whitespace-nowrap">Flowbite</span>
       </a>
-      <button id="button-open-menu" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+      <button id="button-open-menu" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
       </button>
-      <div class="hamburg md:block md:w-auto bg-gray-800" id="navbar-default">
-        <ul class="font-medium flex flex-col justify-center p-4 md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-800">
+      <div class="hamburg md:block md:w-auto" id="navbar-default">
+        <ul class="font-medium flex flex-col justify-center p-4 md:p-0 bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
           <li class="self-end">
-            <button id="button-close-menu" type="button" class="inline-flex items-center p-2 pb-0 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+            <button id="button-close-menu" type="button" class="inline-flex items-center px-2 py-0 w-10 h-10 justify-center text-sm text-gray-500 md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
               <span class="sr-only">Close main menu</span>
               <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
@@ -53,13 +116,13 @@
             </button>
           </li>
           <li>
-            <a href="#welcome-section" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Welcome</a>
+            <a href="#welcome-section" class="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">Welcome</a>
           </li>
           <li>
-            <a href="#projects" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Projects</a>
+            <a href="#projects" class="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Projects</a>
           </li>
           <li>
-            <a href="#contact" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contacts</a>
+            <a href="#contact" class="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 text-center md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contacts</a>
           </li>
         </ul>
       </div>
@@ -68,9 +131,19 @@
   
 
   <!-- Welcome Section -->
-  <header id="welcome-section" class="h-screen flex flex-col justify-center items-center bg-gradient-to-b from-teal-400 to-teal-600 text-white text-center">
-    <h1 class="text-4xl md:text-6xl font-bold">Welcome to My Portfolio</h1>
-    <p class="text-xl md:text-2xl mt-4">Hi, I'm Vitto, a passionate developer!</p>
+  <header id="welcome-section" class="relative h-screen flex flex-col justify-between items-center text-white text-center" style="z-index: -10;">
+    <section>
+      <div class="inner-div" style="z-index: -1;"></div>
+      <h1 class="my-name text-2xl text-black md:text-6xl font-bold mt-20">Mochamad Ariva Alvitto</h1>
+      <p class="text-black md:text-2xl md:mt-4">a passionate developer</p>
+    </section>
+    <section class="flex flex-col flex-wrap justify-center items-center">
+      <img id="profile-picture" src="./assets/images/graduation-1345143_1920.png" class="-mt-32 mb-8">
+      <h2 class="text-lg font-bold px-8">Welcome to my portfolio!</h1>
+    </section>
+    <section>
+
+    </section>
   </header>
 
   <!-- Main Content -->
@@ -78,16 +151,22 @@
     <!-- Projects Section -->
     <section id="projects" class="py-12 bg-gray-100 text-center">
       <h2 class="text-3xl font-bold mb-6">My Projects</h2>
-      <div class="space-y-4">
-        <div class="project-tile">
-          <a href="https://github.com/your-project-link" target="_blank" class="text-xl text-gray-800 font-semibold hover:text-teal-400">
-            Project 1
+      <div class="space-y-4 flex flex-wrap justify-evenly items-center">
+        <div class="project-tile relative px-4">
+          <a href="https://tosaagi.github.io/projects/tosaagiquest/" target="_blank" class="">
+            <img src="./assets/images/image.png" class="project-img object-cover">
           </a>
+          <p class="project-title sm:text-l md:text-xl font-Montserrat">
+            Tosaagi's Quest
+          </p>
         </div>
-        <div class="project-tile">
-          <a href="https://github.com/your-second-project-link" target="_blank" class="text-xl text-gray-800 font-semibold hover:text-teal-400">
-            Project 2
+        <div class="project-tile relative px-4">
+          <a href="https://tosaagi.github.io/projects/tosaagiquest/" target="_blank" class="">
+            <img src="./assets/images/image.png" class="project-img object-cover">
           </a>
+          <p class="project-title sm:text-l md:text-xl font-Montserrat">
+            Tosaagi's Quest
+          </p>
         </div>
       </div>
     </section>
@@ -115,12 +194,33 @@
         navbarMenu.classList.add('move-left');
       });
 
-    // Close the menu by adding the move-right class
+      // Close the menu by adding the move-right class
       buttonCloseMenu.addEventListener('click', () => {
         navbarMenu.classList.remove('move-left'); // Ensure 'move-left' is removed
         navbarMenu.classList.add('move-right');
       });
       
+      // image hover
+      const projectImgs = document.querySelectorAll('.project-img');
+      const projectTitles = document.querySelectorAll('.project-title');
+
+      // Ensure there is a title for each image
+      if (projectImgs.length === projectTitles.length) {
+        projectImgs.forEach((img, index) => {
+          const title = projectTitles[index]; // Match corresponding title
+
+          // Add event listeners for hover detection
+          img.addEventListener('mouseenter', () => {
+            title.style.color = 'rgba(255, 255, 255, 1)'; // Change color
+          });
+
+          img.addEventListener('mouseleave', () => {
+            title.style.color = 'rgba(255, 255, 255, 0)'; // Revert color
+          });
+        });
+      } else {
+        console.error('Mismatch between images and titles. Check your HTML structure.');
+      }
     });
   </script>
 </body>
