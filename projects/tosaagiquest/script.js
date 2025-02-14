@@ -237,9 +237,9 @@ let playerGold = initializeStats.gP;
 let playerUpgradePoints = initializeStats.uP;
 let currentWeaponIndex = initializeStats.cWI;
 let playerDamage;
-let playerCurrentWeapon = playerWeaponInventory[0];
 let playerDefend = false;
 let playerWeaponInventory = [weapons[0]];
+let playerCurrentWeapon = playerWeaponInventory[0];
 
 // Monster Stats Initialization
 let monsterName = initializeStats.mNm;
