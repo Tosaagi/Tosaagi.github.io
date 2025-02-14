@@ -416,6 +416,10 @@ function enableButtons() {
     buttons.style.display = "flex";
     buttons.style.flexDirection = "column";
 
+    if (fighting !== null) {
+        buttons.style.flexDirection = "row";
+    }
+
     controlButtons.forEach((button, index) => {
         let currentButtonFunction = currentScene.buttonFunctions[index];
         if (currentButtonFunction) {
